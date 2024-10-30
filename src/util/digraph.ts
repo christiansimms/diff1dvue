@@ -1,6 +1,8 @@
+import {Node} from './node-interface.ts';
+
 let NodeId = 0;
 
-export class Node {
+export class NodeBase implements Node {
     score = 0;
     id = NodeId++;
 
@@ -20,7 +22,7 @@ export class Node {
     }
 }
 
-export class ValueNode extends Node {
+export class ValueNode extends NodeBase {
     constructor(public value: string, public extraLabel: string) {
         super();
     }
@@ -34,7 +36,7 @@ export class ValueNode extends Node {
     }
 }
 
-export class SearchNode extends Node {
+export class SearchNode extends NodeBase {
     energyUnits = 10;
     originalValueNode: ValueNode;
     leftIndex = 0;
@@ -108,7 +110,7 @@ export class SearchNode extends Node {
     }
 }
 
-export class MatcherNode extends Node {
+export class MatcherNode extends NodeBase {
     left: SearchNode;
     right: SearchNode;
 
@@ -130,7 +132,7 @@ export class MatcherNode extends Node {
     }
 }
 
-export class ContainerNode extends Node {
+export class ContainerNode extends NodeBase {
     constructor(graph: DiGraph, public children: Node[]) {
         super();
         for (const child of this.children) {
