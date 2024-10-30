@@ -1,4 +1,5 @@
-import {ContainerNode, DiGraph, MatcherNode, ValueNode} from './digraph.ts';
+import {DiGraph} from './digraph.ts';
+import {ContainerNode, MatcherNode, ValueNode} from './nodes.ts';
 
 export class Runner {
     graph = new DiGraph();
