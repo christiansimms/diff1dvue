@@ -116,6 +116,13 @@ function getParents(node: MatcherNode) {
     return node.graph.getPreviousNodes(node, {type: 'child'});
 }
 
+function deleteParents(node: MatcherNode) {
+    const parents: ObjectNode[] = getParents(node) as ObjectNode[];
+    for (const parent of parents) {
+        node.graph.removeEdge(parent, node);  // TODO remove recursively?
+    }
+}
+
 export class MatcherNode extends NodeBase {
     left: SearchNode;
     right: SearchNode;
@@ -139,22 +146,41 @@ export class MatcherNode extends NodeBase {
 
     doStep(): void {
         super.doStep();
-        if (this.score > 0 && getParents(this).length === 0) {
-            console.log(`${this.getLabel()}: No parents yet!`);
-            let objectNode: ObjectNode;
+        const parents: ObjectNode[] = getParents(this) as ObjectNode[];
+        if (this.score > 0) {
+            console.log(`${this.getLabel()}: Looking at parents`);
+            let type: string;
             if (this.left.score === 1 && this.right.score === 1) {
                 console.log("Both children are done. Adding edge to parent.");
-                objectNode = new ObjectNode(this.graph, 'move');  // TODO need stay also
+                type = 'move';  // TODO need stay also
             } else if (this.left.score === 1) {
                 console.log("Only left side found.");
-                objectNode = new ObjectNode(this.graph, 'gone');
+                type = 'gone';
             } else if (this.right.score === 1) {
                 console.log("Only right side found.");
-                objectNode = new ObjectNode(this.graph, 'appear');
+                type = 'appear';
             } else {
                 console.log("NYI, skipping");
                 return;
             }
+
+            if (parents.length > 0) {
+                if (parents.length > 1) {
+                    throw new Error(`Expected only one parent, but found ${parents.length}.`);
+                }
+                const parentType = parents[0].type;
+                if (parentType !== type) {
+                    console.log(`Parent type doesn't match, replacing ${parentType} with ${type}`);
+                } else {
+                    console.log("Parent type matches, nothing to do");
+                    return;
+                }
+
+                // Delete parent.
+                deleteParents(this);
+            }
+
+            const objectNode = new ObjectNode(this.graph, type);
             this.graph.addEdge(objectNode, this, {type: 'child'});
         }
     }
