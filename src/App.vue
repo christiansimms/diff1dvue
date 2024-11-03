@@ -7,7 +7,8 @@ import Matcher from './components/Matcher.vue';
     <p>Given 2 arrays of characters, match and find diffs.</p>
   </div>
 <!--    <Matcher :before="['a', null]"  :after="[null, null]"/>-->
-  <Matcher :before="[null, null]"  :after="['a', null]"/>
+<!--  <Matcher :before="[null, null]"  :after="['a', null]"/>-->
+  <Matcher :before="['a', '']"  :after="['', 'a']"/>
 
 <!--  <Matcher :before="['a', null, null]"  :after="[null, 'a', null]"/>-->
 <!--  <Matcher :before="['a', null]"  :after="[null, 'a']"/>-->

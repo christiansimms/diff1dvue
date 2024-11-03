@@ -111,11 +111,16 @@ export class SearchNode extends NodeBase {
     }
 }
 
+// "temporary" helper
+function getParents(node: MatcherNode) {
+    return node.graph.getPreviousNodes(node, {type: 'child'});
+}
+
 export class MatcherNode extends NodeBase {
     left: SearchNode;
     right: SearchNode;
 
-    constructor(graph: DiGraph, public before: ValueNode, public after: ValueNode) {
+    constructor(public graph: DiGraph, public before: ValueNode, public after: ValueNode) {
         super();
         const initialSearchValue = before.value || after.value;
         this.left = new SearchNode(graph, before, initialSearchValue);
@@ -130,6 +135,28 @@ export class MatcherNode extends NodeBase {
 
     getLabel(): string {
         return `MatcherNode\nscore ${this.score}`;
+    }
+
+    doStep(): void {
+        super.doStep();
+        if (this.score > 0 && getParents(this).length === 0) {
+            console.log(`${this.getLabel()}: No parents yet!`);
+            let objectNode: ObjectNode;
+            if (this.left.score === 1 && this.right.score === 1) {
+                console.log("Both children are done. Adding edge to parent.");
+                objectNode = new ObjectNode(this.graph, 'move');  // TODO need stay also
+            } else if (this.left.score === 1) {
+                console.log("Only left side found.");
+                objectNode = new ObjectNode(this.graph, 'gone');
+            } else if (this.right.score === 1) {
+                console.log("Only right side found.");
+                objectNode = new ObjectNode(this.graph, 'appear');
+            } else {
+                console.log("NYI, skipping");
+                return;
+            }
+            this.graph.addEdge(objectNode, this, {type: 'child'});
+        }
     }
 }
 
@@ -151,5 +178,20 @@ export class ContainerNode extends NodeBase {
 
     getLabel(): string {
         return `ContainerNode - score ${this.score}`;
+    }
+}
+
+export class ObjectNode extends NodeBase {
+    constructor(_graph: DiGraph, public type: string) {
+        super();
+    }
+
+    evaluateScore() {
+        // TODO -- Don't need this right?
+        this.score = 1;
+    }
+
+    getLabel(): string {
+        return `ObjectNode ${this.type} - score ${this.score}`;
     }
 }

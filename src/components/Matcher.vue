@@ -27,8 +27,8 @@ function run() {
   runner.doStep();  // TODO: twice to get correct score
   runner.doStep();
   runner.doStep();
-  runner.doStep();
-  runner.doStep();
+  // runner.doStep();
+  // runner.doStep();
   // runner.doStep();
   // runner.doStep();
   // runner.doStep();

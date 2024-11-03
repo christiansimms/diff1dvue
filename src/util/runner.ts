@@ -47,7 +47,7 @@ export class Runner {
         }
 
         // Top level.
-        this.rootNode = new ContainerNode(this.graph, this.matcherNodes);
+        // this.rootNode = new ContainerNode(this.graph, this.matcherNodes);
     }
 
     doStep() {
