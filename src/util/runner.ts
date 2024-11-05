@@ -1,12 +1,12 @@
 import {DiGraph} from './digraph.ts';
-import {ContainerNode, MatcherNode, ValueNode} from './nodes.ts';
+import {MatcherNode, ValueNode} from './nodes.ts';
 
 export class Runner {
     graph = new DiGraph();
     inputBeforeNodes: ValueNode[] = [];
     inputAfterNodes: ValueNode[] = [];
     matcherNodes: MatcherNode[] = [];
-    rootNode?: ContainerNode;
+    // rootNode?: ContainerNode;
 
     constructor(public before: string[], public after: string[]) {
     }
@@ -17,7 +17,7 @@ export class Runner {
         this.inputBeforeNodes = [];
         let lastNode: ValueNode | undefined = undefined;
         for (const [index, char] of this.before.entries()) {
-            const n = new ValueNode(char, `In.${index}`);
+            const n = new ValueNode(this.graph, char, `In.${index}`, index);
             this.graph.addNode(n);
             this.inputBeforeNodes.push(n);
             if (lastNode) {
@@ -29,7 +29,7 @@ export class Runner {
         this.inputAfterNodes = [];
         lastNode = undefined;
         for (const [index, char] of this.after.entries()) {
-            const n = new ValueNode(char, `Out.${index}`);
+            const n = new ValueNode(this.graph, char, `Out.${index}`, index);
             this.graph.addNode(n);
             this.inputAfterNodes.push(n);
             if (lastNode) {

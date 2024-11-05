@@ -6,6 +6,7 @@ export interface EdgeAttr {
 
 // Mimic: https://github.com/fkling/JSNetworkX/blob/master/src/classes/DiGraph.js
 export class DiGraph {
+    constantNodeCache: Map<string, Node> = new Map();
     succ: Map<Node, Map<Node, EdgeAttr>> = new Map();
     pred: Map<Node, Map<Node, EdgeAttr>> = new Map();
     // adj = this.succ;  // everybody does this

@@ -1,4 +1,5 @@
 import {DiGraph} from './digraph.ts';
+import {findOrCreateConstantNode} from './graph-helper.ts';
 import {Node} from './node-interface.ts';
 
 let NodeId = 0;
@@ -24,8 +25,10 @@ export class NodeBase implements Node {
 }
 
 export class ValueNode extends NodeBase {
-    constructor(public value: string, public extraLabel: string) {
+    constructor(public graph: DiGraph, public value: string, public extraLabel: string, public index: number) {
         super();
+        const posNode = findOrCreateConstantNode(graph, String(index));
+        this.graph.addEdge(this, posNode, {type: 'pos'});
     }
 
     evaluateScore() {
@@ -34,6 +37,20 @@ export class ValueNode extends NodeBase {
 
     getLabel(): string {
         return `ValueNode(${this.value})\n${this.extraLabel}`;
+    }
+}
+
+export class ConstantNode extends NodeBase {
+    constructor(public graph: DiGraph, public value: string) {
+        super();
+    }
+
+    evaluateScore() {
+        this.score = 1;
+    }
+
+    getLabel(): string {
+        return `ConstantNode(${this.value})`;
     }
 }
 
