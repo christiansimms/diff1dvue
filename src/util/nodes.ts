@@ -28,6 +28,7 @@ export class ValueNode extends NodeBase {
     constructor(public graph: DiGraph, public value: string, public extraLabel: string, public index: number) {
         super();
         addNodeAttribute(this.graph, this, String(index), 'pos');
+        addNodeAttribute(this.graph, this, value, 'value');
     }
 
     evaluateScore() {
@@ -224,8 +225,9 @@ export class ContainerNode extends NodeBase {
 }
 
 export class ObjectNode extends NodeBase {
-    constructor(_graph: DiGraph, public type: string) {
+    constructor(public graph: DiGraph, public type: string) {
         super();
+        addNodeAttribute(this.graph, this, type, 'type');
     }
 
     evaluateScore() {
