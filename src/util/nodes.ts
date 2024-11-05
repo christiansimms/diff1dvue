@@ -1,5 +1,5 @@
 import {DiGraph} from './digraph.ts';
-import {addNodeAttribute} from './graph-helper.ts';
+import {addNodeAttribute, getNodeAttribute, getOnlyChild, safeParseInt} from './graph-helper.ts';
 import {Node} from './node-interface.ts';
 
 let NodeId = 0;
@@ -166,10 +166,32 @@ export class MatcherNode extends NodeBase {
         const parents: ObjectNode[] = getParents(this) as ObjectNode[];
         if (this.score > 0) {
             console.log(`${this.getLabel()}: Looking at parents`);
+
+            // Figure out targets.
+            let leftValueNode: Node, leftValue: ConstantNode | undefined, leftPos: ConstantNode;
+            let rightValueNode: Node, rightValue: ConstantNode | undefined, rightPos: ConstantNode;
+            if (this.left.score === 1) {
+                leftValueNode = getOnlyChild(this.graph, this.left);
+                leftValue = getNodeAttribute(this.graph, leftValueNode, 'value');
+                leftPos = getNodeAttribute(this.graph, leftValueNode, 'pos');
+            }
+            if (this.right.score === 1) {
+                rightValueNode = getOnlyChild(this.graph, this.right);
+                rightValue = getNodeAttribute(this.graph, rightValueNode, 'value');
+                rightPos = getNodeAttribute(this.graph, rightValueNode, 'pos');
+            }
+
+            let value = leftValue?.value || rightValue?.value;
             let type: string;
+            let delta = 0;
             if (this.left.score === 1 && this.right.score === 1) {
-                console.log("Both children are done. Adding edge to parent.");
-                type = 'move';  // TODO need stay also
+                console.log(`Both children are done. Adding edge to parent. Comparing ${leftPos!.value} to ${rightPos!.value}`);
+                if (leftPos!.value === rightPos!.value) {
+                    type = 'stay';
+                } else {
+                    type = 'move';
+                    delta = safeParseInt(leftPos!.value) - safeParseInt(rightPos!.value);
+                }
             } else if (this.left.score === 1) {
                 console.log("Only left side found.");
                 type = 'gone';
@@ -197,7 +219,7 @@ export class MatcherNode extends NodeBase {
                 deleteParents(this);
             }
 
-            const objectNode = new ObjectNode(this.graph, type);
+            const objectNode = new ObjectNode(this.graph, value || "", type, String(delta));
             this.graph.addEdge(objectNode, this, {type: 'child'});
         }
     }
@@ -225,9 +247,11 @@ export class ContainerNode extends NodeBase {
 }
 
 export class ObjectNode extends NodeBase {
-    constructor(public graph: DiGraph, public type: string) {
+    constructor(public graph: DiGraph, public value: string, public type: string, public delta: string) {
         super();
+        addNodeAttribute(this.graph, this, value, 'value');
         addNodeAttribute(this.graph, this, type, 'type');
+        addNodeAttribute(this.graph, this, delta, 'delta');
     }
 
     evaluateScore() {
