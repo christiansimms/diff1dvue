@@ -108,20 +108,23 @@ export class DiGraph {
     }
 
     getAllNodes() {
-        // Make list. Convert to simple objects since using Node class in DataSet seems to cause problems.
-        const displayNodes = this.nodeArray().map(node => {
-            return {id: node.id, label: node.getLabel()}
-        });
-
         // Compute edges.
+        const seenIds = new Set<number>();
         const displayEdges: any[] = [];
         for (const [u, nbrs] of this.succ) {
             for (const [v, edgeAttr] of nbrs.entries()) {
                 if (edgeAttr.type === 'child') {
                     displayEdges.push({from: u.id, to: v.id});
+                    seenIds.add(u.id);
+                    seenIds.add(v.id);
                 }
             }
         }
+
+        // Make list. Convert to simple objects since using Node class in DataSet seems to cause problems.
+        const displayNodes = this.nodeArray().filter(node => seenIds.has(node.id)).map(node => {
+            return {id: node.id, label: node.getLabel()}
+        });
 
         // Return data.
         // console.log('getAllNodesInPlane: ', displayNodes, displayEdges);
