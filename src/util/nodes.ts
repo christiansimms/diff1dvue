@@ -1,5 +1,12 @@
 import {DiGraph} from './digraph.ts';
-import {addNodeAttribute, getNodeAttribute, getOnlyChild, safeParseInt} from './graph-helper.ts';
+import {
+    addNodeAttribute,
+    deleteParents,
+    getNodeAttribute,
+    getOnlyChild,
+    getParents,
+    safeParseInt
+} from './graph-helper.ts';
 import {Node} from './node-interface.ts';
 
 let NodeId = 0;
@@ -125,18 +132,6 @@ export class SearchNode extends NodeBase {
                 console.log(`${this.getLabel()}, ${this.originalValueNode.extraLabel}: No more moves`);
             }
         }
-    }
-}
-
-// "temporary" helper
-function getParents(node: MatcherNode) {
-    return node.graph.getPreviousNodes(node, {type: 'child'});
-}
-
-function deleteParents(node: MatcherNode) {
-    const parents: ObjectNode[] = getParents(node) as ObjectNode[];
-    for (const parent of parents) {
-        node.graph.removeEdge(parent, node);  // TODO remove recursively?
     }
 }
 

@@ -1,6 +1,18 @@
 import {DiGraph} from './digraph.ts';
 import {Node} from './node-interface.ts';
-import {ConstantNode} from './nodes.ts';
+import {ConstantNode, MatcherNode, ObjectNode} from './nodes.ts';
+
+// "temporary" helper
+export function getParents(node: MatcherNode) {
+    return node.graph.getPreviousNodes(node, {type: 'child'});
+}
+
+export function deleteParents(node: MatcherNode) {
+    const parents: ObjectNode[] = getParents(node) as ObjectNode[];
+    for (const parent of parents) {
+        node.graph.removeEdge(parent, node);  // TODO remove recursively?
+    }
+}
 
 export function getOnlyChild(graph: DiGraph, node: Node): Node {
     const succ = graph.getNextNode(node, {type: 'child'});
@@ -36,4 +48,3 @@ export function getNodeAttribute(graph: DiGraph, node: Node, type: string): Cons
 export function safeParseInt(value: string): number {
     return parseInt(value);
 }
-
