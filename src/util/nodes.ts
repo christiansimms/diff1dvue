@@ -220,26 +220,26 @@ export class MatcherNode extends NodeBase {
     }
 }
 
-export class ContainerNode extends NodeBase {
-    constructor(graph: DiGraph, public children: Node[]) {
-        super();
-        for (const child of this.children) {
-            graph.addEdge(this, child, {type: 'child'});
-        }
-    }
-
-    evaluateScore() {
-        let score = 0;
-        for (const child of this.children) {
-            score += child.score;
-        }
-        this.score = score / this.children.length;
-    }
-
-    getLabel(): string {
-        return `ContainerNode - score ${this.score}`;
-    }
-}
+// export class ContainerNode extends NodeBase {
+//     constructor(graph: DiGraph, public children: Node[]) {
+//         super();
+//         for (const child of this.children) {
+//             graph.addEdge(this, child, {type: 'child'});
+//         }
+//     }
+//
+//     evaluateScore() {
+//         let score = 0;
+//         for (const child of this.children) {
+//             score += child.score;
+//         }
+//         this.score = score / this.children.length;
+//     }
+//
+//     getLabel(): string {
+//         return `ContainerNode - score ${this.score}`;
+//     }
+// }
 
 export class ObjectNode extends NodeBase {
     constructor(public graph: DiGraph, public value: string, public type: string, public delta: string) {
