@@ -1,7 +1,16 @@
 <template>
   <h3>Matcher</h3>
-  <p>Before: {{ before }}</p>
-  <p>After: {{ after }}</p>
+  <div style="display: flex; flex: 1 1 0">
+    <div class="grid-container">
+      <p>Before: {{ before }}</p>
+      <p>After: {{ after }}</p>
+    </div>
+    <div class="grid-container">
+      <button v-on:click="restart">Restart</button>
+      <button v-on:click="doStep">Step</button>
+      Step: {{step}}
+    </div>
+  </div>
 
   <!-- Keep this out of vuejs or else it won't display properly. LETS HOPE NOT TRUE! -->
   <div id="sketch-holder">
@@ -11,7 +20,7 @@
 </template>
 
 <script setup lang="ts">
-import {onMounted} from 'vue';
+import {onMounted, Ref, ref} from 'vue';
 import {Runner} from '../util/runner';
 import {Network} from 'vis-network';
 
@@ -20,21 +29,29 @@ const props = defineProps<{ before?: string[], after?: string[] }>()
 
 let runner: Runner;
 
+const step: Ref<number> = ref(10);
+
 function run() {
   runner = new Runner(props.before!, props.after!);
   runner.installMatchers();
-  runner.doStep();
-  runner.doStep();  // TODO: twice to get correct score
-  runner.doStep();
-  runner.doStep();
-  // runner.doStep();
-  // runner.doStep();
-  // runner.doStep();
-  // runner.doStep();
-  // runner.doStep();
-  // runner.doStep();
+  for(let i = 0; i < step.value; i++) {
+    runner.doStep();
+  }
   displayGraph();
-  console.log("Node array: ", runner.graph.nodeArray());
+}
+
+function restart() {
+  runner = new Runner(props.before!, props.after!);
+  runner.installMatchers();
+  displayGraph();
+  step.value = 0;
+  console.log("Restarted");
+}
+
+function doStep() {
+  step.value = step.value + 1;
+  runner.doStep();
+  displayGraph();
 }
 
 // Display graph.
@@ -87,5 +104,9 @@ onMounted(() => {
   /*width: 100%; /*1000px; 600px */
   height: 600px;
   border: 1px solid lightgray;
+}
+
+.grid-container {
+  margin: 10px;
 }
 </style>
