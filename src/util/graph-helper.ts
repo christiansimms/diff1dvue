@@ -2,7 +2,7 @@ import {DiGraph} from './digraph.ts';
 import {Node} from './node-interface.ts';
 import {ConstantNode, MatcherNode, ObjectNode} from './nodes.ts';
 
-// "temporary" helper
+
 export function getParents(node: MatcherNode) {
     return node.graph.getPreviousNodes(node, {type: 'child'});
 }
