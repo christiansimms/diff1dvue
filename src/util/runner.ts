@@ -13,7 +13,6 @@ export class Runner {
     }
 
     installMatchers() {
-        console.log("installMatchers");
         // Install before.
         this.inputBeforeNodes = [];
         let lastNode: ValueNode | undefined = undefined;
@@ -58,7 +57,7 @@ export class Runner {
             node.doStep();
         }
         const doneNodes = nodes.filter(node => node.isDone);
-        console.log(`Done / total = ${doneNodes.length} / ${nodes.length}`);
+        // console.log(`Done / total = ${doneNodes.length} / ${nodes.length}`);
         return doneNodes.length === nodes.length;
     }
 

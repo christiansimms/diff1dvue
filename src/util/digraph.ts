@@ -135,4 +135,7 @@ export class DiGraph {
 
     }
 
+    log(_node: Node, _message: string) {
+        // console.log(`Node ${node.id}: ${message}`);
+    }
 }

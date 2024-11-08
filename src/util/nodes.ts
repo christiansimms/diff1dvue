@@ -99,7 +99,7 @@ export class SearchNode extends NodeBase {
         super.doStep();
         if (this.score < 1) {
             if (this.energyUnits <= 0) {
-                console.log(`${this.getLabel()}, ${this.originalValueNode.extraLabel}: No more energy`);
+                this.graph.log(this, `${this.getLabel()}, ${this.originalValueNode.extraLabel}: No more energy`);
                 this.isDone = true;
                 return;
             }
@@ -109,9 +109,9 @@ export class SearchNode extends NodeBase {
                 // Search left.
                 const searchNode = this.leftNode || this.originalValueNode;
                 const foundNode = this.graph.getPreviousNode(searchNode, {type: 'seq'});
-                console.log(`${debugLabel} Trying to move left`);
+                this.graph.log(this, `${debugLabel} Trying to move left`);
                 if (foundNode) {
-                    console.log(`${debugLabel} Moving left`);
+                    this.graph.log(this, `${debugLabel} Moving left`);
                     this.graph.removeEdge(this, this.valueNode);
                     this.graph.addEdge(this, foundNode, {type: 'child'});
                     this.valueNode = foundNode as ValueNode;
@@ -124,9 +124,9 @@ export class SearchNode extends NodeBase {
                 // Search right.
                 const searchNode = this.rightNode || this.originalValueNode;
                 const foundNode = this.graph.getNextNode(searchNode, {type: 'seq'});
-                console.log(`${debugLabel} Trying to move right`);
+                this.graph.log(this, `${debugLabel} Trying to move right`);
                 if (foundNode) {
-                    console.log(`${debugLabel} Moving right`);
+                    this.graph.log(this, `${debugLabel} Moving right`);
                     this.graph.removeEdge(this, this.valueNode);
                     this.graph.addEdge(this, foundNode, {type: 'child'});
                     this.valueNode = foundNode as ValueNode;
@@ -136,7 +136,7 @@ export class SearchNode extends NodeBase {
                     this.rightIndex = -1; // stop searching
                 }
             } else {
-                console.log(`${this.getLabel()}, ${this.originalValueNode.extraLabel}: No more moves`);
+                this.graph.log(this, `${this.getLabel()}, ${this.originalValueNode.extraLabel}: No more moves`);
             }
         }
     }
@@ -167,7 +167,7 @@ export class MatcherNode extends NodeBase {
         super.doStep();
         const parents: ObjectNode[] = getParents(this) as ObjectNode[];
         if (this.score > 0) {
-            console.log(`${this.getLabel()}: Looking at parents`);
+            this.graph.log(this, `${this.getLabel()}: Looking at parents`);
 
             // Figure out targets.
             let leftValueNode: Node, leftValue: ConstantNode | undefined, leftPos: ConstantNode;
@@ -187,7 +187,7 @@ export class MatcherNode extends NodeBase {
             let type: string;
             let delta = 0;
             if (this.left.score === 1 && this.right.score === 1) {
-                console.log(`Both children are done. Adding edge to parent. Comparing ${leftPos!.value} to ${rightPos!.value}`);
+                this.graph.log(this, `Both children are done. Adding edge to parent. Comparing ${leftPos!.value} to ${rightPos!.value}`);
                 if (leftPos!.value === rightPos!.value) {
                     type = 'stay';
                 } else {
@@ -195,10 +195,10 @@ export class MatcherNode extends NodeBase {
                     delta = safeParseInt(leftPos!.value) - safeParseInt(rightPos!.value);
                 }
             } else if (this.left.score === 1) {
-                console.log("Only left side found.");
+                this.graph.log(this, "Only left side found.");
                 type = 'gone';
             } else if (this.right.score === 1) {
-                console.log("Only right side found.");
+                this.graph.log(this, "Only right side found.");
                 type = 'appear';
             } else {
                 throw new Error(`Unexpected situation`);
@@ -210,9 +210,9 @@ export class MatcherNode extends NodeBase {
                 }
                 const parentType = parents[0].type;
                 if (parentType !== type) {
-                    console.log(`Parent type doesn't match, replacing ${parentType} with ${type}`);
+                    this.graph.log(this, `Parent type doesn't match, replacing ${parentType} with ${type}`);
                 } else {
-                    console.log("Parent type matches, nothing to do");
+                    this.graph.log(this, "Parent type matches, nothing to do");
                     return;
                 }
 
@@ -224,7 +224,7 @@ export class MatcherNode extends NodeBase {
             this.graph.addEdge(objectNode, this, {type: 'child'});
 
             if (this.left.isDone && this.right.isDone) {
-                console.log(`MatcherNode is done`);
+                this.graph.log(this, `MatcherNode is done`);
                 this.isDone = true;
             }
         }
