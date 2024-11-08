@@ -6,6 +6,7 @@ export class Runner {
     inputBeforeNodes: ValueNode[] = [];
     inputAfterNodes: ValueNode[] = [];
     matcherNodes: MatcherNode[] = [];
+
     // rootNode?: ContainerNode;
 
     constructor(public before: string[], public after: string[]) {
@@ -50,11 +51,25 @@ export class Runner {
         // this.rootNode = new ContainerNode(this.graph, this.matcherNodes);
     }
 
-    doStep() {
+    // Return true if all done.
+    doStep(): boolean {
         const nodes = this.graph.nodeArray();
         for (const node of nodes) {
             node.doStep();
         }
+        const doneNodes = nodes.filter(node => node.isDone);
+        console.log(`Done / total = ${doneNodes.length} / ${nodes.length}`);
+        return doneNodes.length === nodes.length;
     }
 
+    // If done then return number of steps, otherwise return undefined.
+    runUntilDone(limit: number): number | undefined {
+        for (let i = 0; i < limit; i++) {
+            const isDone = this.doStep();
+            if (isDone) {
+                return i + 1;
+            }
+        }
+        return undefined;
+    }
 }

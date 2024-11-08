@@ -14,6 +14,7 @@ let NodeId = 0;
 export class NodeBase implements Node {
     score = 0;
     id = NodeId++;
+    isDone = false;
 
     constructor() {
     }
@@ -40,6 +41,7 @@ export class ValueNode extends NodeBase {
 
     evaluateScore() {
         this.score = 1;
+        this.isDone = true;
     }
 
     getLabel(): string {
@@ -54,6 +56,7 @@ export class ConstantNode extends NodeBase {
 
     evaluateScore() {
         this.score = 1;
+        this.isDone = true;
     }
 
     getLabel(): string {
@@ -83,6 +86,9 @@ export class SearchNode extends NodeBase {
         }
         const match = children[0].value === this.value;
         this.score = match ? 1 : 0;
+        if (this.score === 1) {
+           this.isDone = true;
+        }
     }
 
     getLabel(): string {
@@ -94,6 +100,7 @@ export class SearchNode extends NodeBase {
         if (this.score < 1) {
             if (this.energyUnits <= 0) {
                 console.log(`${this.getLabel()}, ${this.originalValueNode.extraLabel}: No more energy`);
+                this.isDone = true;
                 return;
             }
             this.energyUnits -= 1;
@@ -194,8 +201,7 @@ export class MatcherNode extends NodeBase {
                 console.log("Only right side found.");
                 type = 'appear';
             } else {
-                console.log("NYI, skipping");
-                return;
+                throw new Error(`Unexpected situation`);
             }
 
             if (parents.length > 0) {
@@ -216,6 +222,11 @@ export class MatcherNode extends NodeBase {
 
             const objectNode = new ObjectNode(this.graph, value || "", type, String(delta));
             this.graph.addEdge(objectNode, this, {type: 'child'});
+
+            if (this.left.isDone && this.right.isDone) {
+                console.log(`MatcherNode is done`);
+                this.isDone = true;
+            }
         }
     }
 }
@@ -252,6 +263,7 @@ export class ObjectNode extends NodeBase {
     evaluateScore() {
         // TODO -- Don't need this right?
         this.score = 1;
+        this.isDone = true;
     }
 
     getLabel(): string {

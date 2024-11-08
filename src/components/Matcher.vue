@@ -8,6 +8,7 @@
     <div class="grid-container">
       <button v-on:click="restart">Restart</button>
       <button v-on:click="doStep">Step</button>
+      <div v-if="message">Message: {{message}}</div>
       Step: {{step}}
     </div>
   </div>
@@ -31,11 +32,14 @@ let runner: Runner;
 
 const step: Ref<number> = ref(10);
 
+const message: Ref<string> = ref("");
 function run() {
   runner = new Runner(props.before!, props.after!);
   runner.installMatchers();
-  for(let i = 0; i < step.value; i++) {
-    runner.doStep();
+  const stepsCompleted = runner.runUntilDone(10);
+  if (stepsCompleted) {
+    message.value = `Completed in ${stepsCompleted} steps.`;
+    step.value = stepsCompleted;
   }
   displayGraph();
 }
@@ -45,12 +49,16 @@ function restart() {
   runner.installMatchers();
   displayGraph();
   step.value = 0;
+  message.value = "";
   console.log("Restarted");
 }
 
 function doStep() {
   step.value = step.value + 1;
-  runner.doStep();
+  const isDone = runner.doStep();
+  if (isDone) {
+    message.value = "Done!";
+  }
   displayGraph();
 }
 
