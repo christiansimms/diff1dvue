@@ -1,17 +1,10 @@
 import {DiGraph} from './digraph.ts';
 import {Node} from './node-interface.ts';
-import {ConstantNode, MatcherNode, ObjectNode} from './nodes.ts';
+import {ConstantNode, MatcherNode} from './nodes.ts';
 
 
 export function getParents(node: MatcherNode) {
     return node.graph.getPreviousNodes(node, {type: 'child'});
-}
-
-export function deleteParents(node: MatcherNode) {
-    const parents: ObjectNode[] = getParents(node) as ObjectNode[];
-    for (const parent of parents) {
-        node.graph.removeEdge(parent, node);  // TODO remove recursively?
-    }
 }
 
 export function getOnlyChild(graph: DiGraph, node: Node): Node {

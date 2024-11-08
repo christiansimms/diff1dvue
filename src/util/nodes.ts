@@ -1,7 +1,6 @@
 import {DiGraph} from './digraph.ts';
 import {
     addNodeAttribute,
-    deleteParents,
     getNodeAttribute,
     getOnlyChild,
     getParents,
@@ -217,7 +216,7 @@ export class MatcherNode extends NodeBase {
                 }
 
                 // Delete parent.
-                deleteParents(this);
+                this.graph.removeNode(parents[0]);
             }
 
             const objectNode = new ObjectNode(this.graph, value || "", type, String(delta));
@@ -267,6 +266,6 @@ export class ObjectNode extends NodeBase {
     }
 
     getLabel(): string {
-        return `ObjectNode ${this.type} - score ${this.score}`;
+        return `ObjectNode ${this.type} - score ${this.score} - id: ${this.id}`;
     }
 }

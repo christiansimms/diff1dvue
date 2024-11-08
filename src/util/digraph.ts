@@ -82,7 +82,6 @@ export class DiGraph {
         return undefined;
     }
 
-
     getPreviousNodes(n: Node, edgeAttrParam?: EdgeAttr): Node[] {
         const out: Node[] = [];
         const nbrs = this.pred.get(n);
@@ -105,6 +104,20 @@ export class DiGraph {
             throw new Error(`Expected only one previous node, but found ${nodes.length}.`);
         }
         return undefined;
+    }
+
+    removeNode(n: Node): void {
+      const nbrs = this.succ.get(n);
+      for (const [u, _edgeAttr] of nbrs!.entries()) {
+        this.pred.get(u)!.delete(n); // remove all edges n-u in digraph
+      }
+      this.succ.delete(n); // remove node from succ
+
+      const nbrs2 = this.pred.get(n);
+      for (const [u, _edgeAttr] of nbrs2!.entries()) {
+        this.succ.get(u)!.delete(n); // remove all edges n-u in digraph
+      }
+      this.pred.delete(n); // remove node from pred
     }
 
     getAllNodes() {
