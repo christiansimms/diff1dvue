@@ -1,4 +1,5 @@
 import {DiGraph} from './digraph.ts';
+import {GeneralizeNode} from './generalize-node.ts';
 import {MatcherNode, ValueNode} from './nodes.ts';
 
 export class Runner {
@@ -6,6 +7,7 @@ export class Runner {
     inputBeforeNodes: ValueNode[] = [];
     inputAfterNodes: ValueNode[] = [];
     matcherNodes: MatcherNode[] = [];
+    generalizeNode?: GeneralizeNode;
 
     // rootNode?: ContainerNode;
 
@@ -50,6 +52,11 @@ export class Runner {
         // this.rootNode = new ContainerNode(this.graph, this.matcherNodes);
     }
 
+    installGeneralize() {
+        this.generalizeNode = new GeneralizeNode(this.graph);
+        this.graph.addNode(this.generalizeNode);
+    }
+
     // Return true if all done.
     doStep(): boolean {
         const nodes = this.graph.nodeArray();
@@ -62,11 +69,15 @@ export class Runner {
     }
 
     // If done then return number of steps, otherwise return undefined.
-    runUntilDone(limit: number): number | undefined {
-        for (let i = 0; i < limit; i++) {
+    runUntilDone(stepLimit: number, shouldGeneralize = false): number | undefined {
+        for (let i = 0; i < stepLimit; i++) {
             const isDone = this.doStep();
             if (isDone) {
-                return i + 1;
+                if (shouldGeneralize) {
+                    this.installGeneralize();
+                } else {
+                    return i + 1;
+                }
             }
         }
         return undefined;

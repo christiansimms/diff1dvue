@@ -36,10 +36,13 @@ const message: Ref<string> = ref("");
 function run() {
   runner = new Runner(props.before!, props.after!);
   runner.installMatchers();
-  const stepsCompleted = runner.runUntilDone(10);
+  const defaultSteps = 10;
+  const stepsCompleted = runner.runUntilDone(defaultSteps, true);
   if (stepsCompleted) {
     message.value = `Completed in ${stepsCompleted} steps.`;
     step.value = stepsCompleted;
+  } else {
+    message.value = `Not completed in ${defaultSteps} steps.`;
   }
   displayGraph();
 }
