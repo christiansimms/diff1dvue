@@ -50,7 +50,7 @@ export class ValueNode extends NodeBase {
 }
 
 export class ConstantNode extends NodeBase {
-    constructor(public graph: DiGraph, public value: string) {
+    constructor(public _graph: DiGraph, public value: string) {
         super();
     }
 

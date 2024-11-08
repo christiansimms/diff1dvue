@@ -3,10 +3,12 @@ import {Runner} from './runner.ts';
 function simple(before: string[], after: string[]) {
     const runner = new Runner(before, after);
     runner.installMatchers();
-    runner.doStep();
-    runner.doStep();
-    runner.doStep();
-
+    const stepsCompleted = runner.runUntilDone(10);
+    if (stepsCompleted) {
+        console.log("Success");
+    } else {
+        throw new Error(`Test failed: ${before} -> ${after}`);
+    }
 }
 
 console.log("Starting tests");
