@@ -1,12 +1,7 @@
 import {DiGraph} from './digraph.ts';
-import {
-    addNodeAttribute,
-    getNodeAttribute,
-    getOnlyChild,
-    getParents,
-    safeParseInt
-} from './graph-helper.ts';
+import {addNodeAttribute, getNodeAttribute, getOnlyChild, getParents, safeParseInt} from './graph-helper.ts';
 import {Node} from './node-interface.ts';
+import {ObjectNode} from './object-node.ts';
 
 let NodeId = 0;
 
@@ -251,24 +246,3 @@ export class MatcherNode extends NodeBase {
 //     }
 // }
 
-export class ObjectNode extends NodeBase {
-    constructor(public graph: DiGraph, public value: string, public type: string, public delta: string, public inputValueNode?: Node) {
-        super();
-        addNodeAttribute(this.graph, this, value, 'value');
-        addNodeAttribute(this.graph, this, type, 'type');
-        addNodeAttribute(this.graph, this, delta, 'delta');
-        if (inputValueNode) {
-            this.graph.addEdge(this, inputValueNode, {type: 'input-value'});
-        }
-    }
-
-    evaluateScore() {
-        // TODO -- Don't need this right?
-        this.score = 1;
-        this.isDone = true;
-    }
-
-    getLabel(): string {
-        return `ObjectNode ${this.type} - score ${this.score} - id: ${this.id}`;
-    }
-}

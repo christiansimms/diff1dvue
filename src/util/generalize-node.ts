@@ -1,5 +1,6 @@
 import {DiGraph} from './digraph.ts';
-import {NodeBase, ObjectNode} from './nodes.ts';
+import {NodeBase} from './nodes.ts';
+import {ObjectNode} from './object-node.ts';
 
 export class GeneralizeNode extends NodeBase {
     workQueue: ObjectNode[] = [];
