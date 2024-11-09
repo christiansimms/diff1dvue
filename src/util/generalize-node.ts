@@ -2,11 +2,12 @@ import {DiGraph} from './digraph.ts';
 import {NodeBase, ObjectNode} from './nodes.ts';
 
 export class GeneralizeNode extends NodeBase {
+    workQueue: ObjectNode[] = [];
     constructor(public graph: DiGraph) {
         super();
 
-        const nodes = this.graph.nodeArray().filter(n => n instanceof ObjectNode);
-        console.log("FOUND objects", nodes);
+        this.workQueue = this.graph.nodeArray().filter(n => n instanceof ObjectNode);
+        console.log("FOUND objects", this.workQueue);
     }
 
     evaluateScore() {
@@ -18,9 +19,19 @@ export class GeneralizeNode extends NodeBase {
 
     doStep(): void {
         super.doStep();
-        console.log("GeneralizeNode doStep");
 
-        // Find next object node.
-        // Combine it.
+        if (this.workQueue?.length === 0) {
+            this.isDone = true;
+        } else {
+            // Find next object node.
+            const objectNode = this.workQueue.pop();
+            console.log("GN looking at: ", objectNode);
+            if (!objectNode) {
+                throw new Error(`Expected object node but found none.`);
+            }
+
+            // Combine it.
+            this.graph.addEdge(this, objectNode, {type: 'child'});
+        }
     }
 }

@@ -32,9 +32,9 @@ export class NodeBase implements Node {
 }
 
 export class ValueNode extends NodeBase {
-    constructor(public graph: DiGraph, public value: string, public extraLabel: string, public index: number) {
+    constructor(public graph: DiGraph, public value: string, public extraLabel: string, public pos: number) {
         super();
-        addNodeAttribute(this.graph, this, String(index), 'pos');
+        addNodeAttribute(this.graph, this, String(pos), 'pos');
         addNodeAttribute(this.graph, this, value, 'value');
     }
 
@@ -169,7 +169,7 @@ export class MatcherNode extends NodeBase {
             this.graph.log(this, `${this.getLabel()}: Looking at parents`);
 
             // Figure out targets.
-            let leftValueNode: Node, leftValue: ConstantNode | undefined, leftPos: ConstantNode;
+            let leftValueNode: Node | undefined = undefined, leftValue: ConstantNode | undefined, leftPos: ConstantNode;
             let rightValueNode: Node, rightValue: ConstantNode | undefined, rightPos: ConstantNode;
             if (this.left.score === 1) {
                 leftValueNode = getOnlyChild(this.graph, this.left);
@@ -219,7 +219,7 @@ export class MatcherNode extends NodeBase {
                 this.graph.removeNode(parents[0]);
             }
 
-            const objectNode = new ObjectNode(this.graph, value || "", type, String(delta));
+            const objectNode = new ObjectNode(this.graph, value || "", type, String(delta), leftValueNode);
             this.graph.addEdge(objectNode, this, {type: 'child'});
 
             if (this.left.isDone && this.right.isDone) {
@@ -252,11 +252,14 @@ export class MatcherNode extends NodeBase {
 // }
 
 export class ObjectNode extends NodeBase {
-    constructor(public graph: DiGraph, public value: string, public type: string, public delta: string) {
+    constructor(public graph: DiGraph, public value: string, public type: string, public delta: string, public inputValueNode?: Node) {
         super();
         addNodeAttribute(this.graph, this, value, 'value');
         addNodeAttribute(this.graph, this, type, 'type');
         addNodeAttribute(this.graph, this, delta, 'delta');
+        if (inputValueNode) {
+            this.graph.addEdge(this, inputValueNode, {type: 'input-value'});
+        }
     }
 
     evaluateScore() {

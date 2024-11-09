@@ -70,11 +70,13 @@ export class Runner {
 
     // If done then return number of steps, otherwise return undefined.
     runUntilDone(stepLimit: number, shouldGeneralize = false): number | undefined {
+        let alreadyGeneralized = false;
         for (let i = 0; i < stepLimit; i++) {
             const isDone = this.doStep();
             if (isDone) {
-                if (shouldGeneralize) {
+                if (shouldGeneralize && !alreadyGeneralized) {
                     this.installGeneralize();
+                    alreadyGeneralized = true;
                 } else {
                     return i + 1;
                 }
