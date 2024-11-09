@@ -30,8 +30,11 @@ export class GeneralizeNode extends NodeBase {
                 throw new Error(`Expected object node but found none.`);
             }
 
-            // Combine it.
+            // Make it a child of this node.
             this.graph.addEdge(this, objectNode, {type: 'child'});
+
+            // Combine it.
+            // const existingRule = findRuleForNode(this.graph, objectNode);
         }
     }
 }
