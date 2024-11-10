@@ -1,4 +1,4 @@
-import {Node} from './node-interface.ts';
+import {Node} from './nodeInterface.ts';
 
 export interface EdgeAttr {
     type: string;

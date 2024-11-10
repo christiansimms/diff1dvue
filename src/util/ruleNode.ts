@@ -1,4 +1,4 @@
-import {Node} from './node-interface.ts';
+import {Node} from './nodeInterface.ts';
 import {DiGraph} from './digraph.ts';
 import {NodeBase} from './nodeBase.ts';
 

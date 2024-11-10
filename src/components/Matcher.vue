@@ -34,6 +34,11 @@
 
   <div v-if="outputNodes.length > 0">
     Output nodes:
+    <div class="grid-container">
+      <p>Before: {{ before2 }}</p>
+<!--      <p>After: {{ after }}</p>-->
+    </div>
+
     <div v-for="node in outputNodes" :key="node.id">
       <p>{{node.id}}: {{node.getLabel()}}</p>
     </div>
@@ -44,7 +49,7 @@
 
 <script setup lang="ts">
 import {onMounted, Ref, ref} from 'vue';
-import {Node} from '../util/node-interface.ts';
+import {Node} from '../util/nodeInterface.ts';
 import {OutputNode} from '../util/outputNode.ts';
 import {RuleNode} from '../util/ruleNode.ts';
 import {Runner} from '../util/runner';
