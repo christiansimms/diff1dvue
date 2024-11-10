@@ -9,6 +9,8 @@ export class Runner {
     inputAfterNodes: ValueNode[] = [];
     matcherNodes: MatcherNode[] = [];
     generalizeNode?: GeneralizeNode;
+    inputBeforeNodes2: ValueNode[] = [];
+    outputAfterNodes2: ValueNode[] = [];
 
     // rootNode?: ContainerNode;
 
@@ -59,6 +61,32 @@ export class Runner {
     }
 
     installApplyRules() {
+        console.log("installApplyRules");
+        // Install before.
+        this.inputBeforeNodes2 = [];
+        let lastNode: ValueNode | undefined = undefined;
+        for (const [index, char] of this.before.entries()) {
+            const n = new ValueNode(this.graph, char, `In.${index}`, index);
+            this.graph.addNode(n);
+            this.inputBeforeNodes2.push(n);
+            if (lastNode) {
+                this.graph.addEdge(lastNode, n, {type: 'seq'});
+            }
+            lastNode = n;
+        }
+        // Install after.
+        this.outputAfterNodes2 = [];
+        lastNode = undefined;
+        for (const [index, char] of this.after.entries()) {
+            const n = new ValueNode(this.graph, char, `Out.${index}`, index);
+            this.graph.addNode(n);
+            this.outputAfterNodes2.push(n);
+            if (lastNode) {
+                this.graph.addEdge(lastNode, n, {type: 'seq'});
+            }
+            lastNode = n;
+        }
+
     }
 
     // Return true if all done.
@@ -84,7 +112,7 @@ export class Runner {
                     alreadyGeneralized = true;
                 } else if (shouldApplyRules && !alreadyAppliedRules) {
                     this.installApplyRules();
-                    alreadyGeneralized = true;
+                    alreadyAppliedRules = true;
                 } else {
                     return i + 1;
                 }
