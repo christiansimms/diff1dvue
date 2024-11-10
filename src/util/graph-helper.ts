@@ -2,6 +2,8 @@ import {ConstantNode} from './constantNode.ts';
 import {DiGraph} from './digraph.ts';
 import {MatcherNode} from './matcherNode.ts';
 import {Node} from './node-interface.ts';
+import {ObjectNode} from './objectNode.ts';
+import {ValueNode} from './valueNode.ts';
 
 
 export function getParents(node: MatcherNode) {
@@ -41,4 +43,19 @@ export function getNodeAttribute(graph: DiGraph, node: Node, type: string): Cons
 
 export function safeParseInt(value: string): number {
     return parseInt(value);
+}
+
+export function findRuleForNode(graph: DiGraph, ruleContainerNode: Node, inputValueNode: ValueNode): Node | undefined {
+    const possibleRules = graph.getNextNodes(ruleContainerNode, {type: 'rule'});
+    for (const rule of possibleRules) {
+        const ruleInNode = graph.getNextNode(rule, {type: 'in'});
+        if (ruleInNode && (ruleInNode as ValueNode).value === inputValueNode.value) { // TODO .value
+            return rule;
+        }
+    }
+    return undefined;
+}
+
+export function areRuleOutputsSame(existingRuleOutNode: ObjectNode, objectNode: ObjectNode): boolean {
+    return existingRuleOutNode.type === objectNode.type && existingRuleOutNode.delta === objectNode.delta;
 }

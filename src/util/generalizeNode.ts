@@ -1,24 +1,8 @@
 import {DiGraph} from './digraph.ts';
+import {areRuleOutputsSame, findRuleForNode} from './graph-helper.ts';
 import {NodeBase} from './nodeBase.ts';
-import {Node} from './node-interface.ts';
 import {ObjectNode} from './objectNode.ts';
 import {RuleNode} from './ruleNode.ts';
-import {ValueNode} from './valueNode.ts';
-
-function findRuleForNode(graph: DiGraph, startNode: Node, inputValueNode: ValueNode): Node | undefined {
-    const possibleRules = graph.getNextNodes(startNode, {type: 'rule'});
-    for(const rule of possibleRules) {
-        const ruleInNode = graph.getNextNode(rule, {type: 'in'});
-        if (ruleInNode && (ruleInNode as ValueNode).value === inputValueNode.value) { // TODO .value
-            return rule;
-        }
-    }
-    return undefined;
-}
-
-function areRuleOutputsSame(existingRuleOutNode: ObjectNode, objectNode: ObjectNode): boolean {
-    return existingRuleOutNode.type === objectNode.type && existingRuleOutNode.delta === objectNode.delta;
-}
 
 export class GeneralizeNode extends NodeBase {
     workQueue: ObjectNode[] = [];

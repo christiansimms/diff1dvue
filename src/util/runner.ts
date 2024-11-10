@@ -1,3 +1,4 @@
+import {ApplyRulesNode} from './applyRulesNode.ts';
 import {DiGraph} from './digraph.ts';
 import {GeneralizeNode} from './generalizeNode.ts';
 import {MatcherNode} from './matcherNode.ts';
@@ -9,6 +10,7 @@ export class Runner {
     inputAfterNodes: ValueNode[] = [];
     matcherNodes: MatcherNode[] = [];
     generalizeNode?: GeneralizeNode;
+    applyRulesNode?: ApplyRulesNode;
     inputBeforeNodes2: ValueNode[] = [];
     outputAfterNodes2: ValueNode[] = [];
 
@@ -61,11 +63,10 @@ export class Runner {
     }
 
     installApplyRules() {
-        console.log("installApplyRules");
         // Install before.
         this.inputBeforeNodes2 = [];
         let lastNode: ValueNode | undefined = undefined;
-        for (const [index, char] of this.before.entries()) {
+        for (const [index, char] of this.before2.entries()) {
             const n = new ValueNode(this.graph, char, `In.${index}`, index);
             this.graph.addNode(n);
             this.inputBeforeNodes2.push(n);
@@ -87,6 +88,8 @@ export class Runner {
             lastNode = n;
         }
 
+        this.applyRulesNode = new ApplyRulesNode(this.graph, this.generalizeNode!, this.inputBeforeNodes2, this.outputAfterNodes2);
+        this.graph.addNode(this.applyRulesNode);
     }
 
     // Return true if all done.
