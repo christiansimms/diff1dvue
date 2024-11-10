@@ -3,7 +3,7 @@ import {DiGraph} from './digraph.ts';
 import {getNodeAttribute, getOnlyChild, getParents, safeParseInt} from './graph-helper.ts';
 import {NodeBase} from './nodeBase.ts';
 import {SearchNode} from './searchNode.ts';
-import {ObjectNode} from './objectNode.ts';
+import {ObjectNode, ObjectNodeType} from './objectNode.ts';
 import {ValueNode} from './valueNode.ts';
 
 export class MatcherNode extends NodeBase {
@@ -49,7 +49,7 @@ export class MatcherNode extends NodeBase {
             }
 
             let value = leftValue?.value || rightValue?.value;
-            let type: string;
+            let type: ObjectNodeType;
             let delta = 0;
             if (this.left.score === 1 && this.right.score === 1) {
                 this.graph.log(this, `Both children are done. Adding edge to parent. Comparing ${leftPos!.value} to ${rightPos!.value}`);
@@ -57,7 +57,7 @@ export class MatcherNode extends NodeBase {
                     type = 'stay';
                 } else {
                     type = 'move';
-                    delta = safeParseInt(leftPos!.value) - safeParseInt(rightPos!.value);
+                    delta = safeParseInt(rightPos!.value) - safeParseInt(leftPos!.value);
                 }
             } else if (this.left.score === 1) {
                 this.graph.log(this, "Only left side found.");

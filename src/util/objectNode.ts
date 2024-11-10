@@ -4,8 +4,10 @@ import {NodeBase} from './nodeBase.ts';
 
 import {ValueNode} from './valueNode.ts';
 
+export type ObjectNodeType = 'stay' | 'move' | 'gone' | 'appear';
+
 export class ObjectNode extends NodeBase {
-    constructor(public graph: DiGraph, public value: string, public type: string, public delta: string, public inputValueNode?: ValueNode) {
+    constructor(public graph: DiGraph, public value: string, public type: ObjectNodeType, public delta: string, public inputValueNode?: ValueNode) {
         super();
         addNodeAttribute(this.graph, this, value, 'value');
         addNodeAttribute(this.graph, this, type, 'type');

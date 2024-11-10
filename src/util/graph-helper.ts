@@ -76,5 +76,11 @@ export function copyAttributes(graph: DiGraph, fromNode: ObjectNode, toNode: Out
 }
 
 export function copyOutputNode(graph: DiGraph, existingRuleOutNode: ObjectNode, correspondingOutputNode: OutputNode): void {
-    copyAttributes(graph, existingRuleOutNode, correspondingOutputNode);
+    if (existingRuleOutNode.type === 'stay') {
+        copyAttributes(graph, existingRuleOutNode, correspondingOutputNode);
+    } else if (existingRuleOutNode.type === 'move') {
+        copyAttributes(graph, existingRuleOutNode, correspondingOutputNode);
+    } else {
+        throw new Error(`NYI type ${existingRuleOutNode.type}`);
+    }
 }
