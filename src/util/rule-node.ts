@@ -7,6 +7,7 @@ export class RuleNode extends NodeBase {
     }
 
     evaluateScore() {
+        this.isDone = true;
     }
 
     getLabel(): string {

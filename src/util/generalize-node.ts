@@ -22,14 +22,20 @@ function areRuleOutputsSame(existingRuleOutNode: ObjectNode, objectNode: ObjectN
 
 export class GeneralizeNode extends NodeBase {
     workQueue: ObjectNode[] = [];
+    workQueueSize = 0;
     constructor(public graph: DiGraph) {
         super();
 
         this.workQueue = this.graph.nodeArray().filter(n => n instanceof ObjectNode);
+        this.workQueueSize = this.workQueue.length;
         console.log("FOUND objects", this.workQueue);
+        if (this.workQueueSize === 0) {
+            throw new Error(`Expected at least one object node.`);
+        }
     }
 
     evaluateScore() {
+        this.score = (this.workQueueSize - this.workQueue.length) / this.workQueueSize;
     }
 
     getLabel(): string {

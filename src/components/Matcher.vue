@@ -18,10 +18,19 @@
     <!-- Our sketch will go here! -->
   </div>
 
+  <div>
+    List of nodes not done:
+    <div v-for="node in nodesNotDone" :key="node.id">
+      <p>{{node.id}}: {{node.getLabel()}}</p>
+    </div>
+
+  </div>
+
 </template>
 
 <script setup lang="ts">
 import {onMounted, Ref, ref} from 'vue';
+import {Node} from '../util/node-interface.ts';
 import {Runner} from '../util/runner';
 import {Network} from 'vis-network';
 
@@ -94,6 +103,7 @@ function setupNetwork() {
   network = new Network(container, data, options);
 }
 
+const nodesNotDone: Ref<Node[]> = ref([]);
 function displayGraph() {
   const permData = runner.graph.getAllNodes();
   const data = {
@@ -101,6 +111,7 @@ function displayGraph() {
     edges: permData.edges
   };
   network.setData(data);
+  nodesNotDone.value = runner.graph.nodeArray().filter(n => !n.isDone);
 }
 
 onMounted(() => {
