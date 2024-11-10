@@ -61,8 +61,20 @@ export function areRuleOutputsSame(existingRuleOutNode: ObjectNode, objectNode: 
     return existingRuleOutNode.type === objectNode.type && existingRuleOutNode.delta === objectNode.delta;
 }
 
-export function copyOutputNode(graph: DiGraph, existingRuleOutNode: Node, correspondingOutputNode: OutputNode): void {
-    if (!(existingRuleOutNode instanceof ObjectNode)) {
-        throw new Error(`Expected existingRuleOutNode to be an ObjectNode.`);
+export function copyAttributes(graph: DiGraph, fromNode: ObjectNode, toNode: OutputNode): void {
+    const allEdges = graph.getNextEdges(fromNode);
+    for (const [targetNode, edgeAttr] of allEdges) {
+        if (edgeAttr.type === 'child') {
+            continue;
+        }
+        if (!(targetNode instanceof ConstantNode) && !(targetNode instanceof ValueNode)) {
+            throw new Error(`Expected a ConstantNode but found ${targetNode}.`);
+        }
+        // addNodeAttribute(graph, toNode, targetNode, edgeAttr.type);
+        graph.addEdge(toNode, targetNode, {type: edgeAttr.type});
     }
+}
+
+export function copyOutputNode(graph: DiGraph, existingRuleOutNode: ObjectNode, correspondingOutputNode: OutputNode): void {
+    copyAttributes(graph, existingRuleOutNode, correspondingOutputNode);
 }

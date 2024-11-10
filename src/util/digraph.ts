@@ -128,6 +128,18 @@ export class DiGraph {
       this.pred.delete(n); // remove node from pred
     }
 
+    getNextEdges(n: Node): [Node, EdgeAttr][] {
+        const out: [Node, EdgeAttr][] = [];
+        const nbrs = this.succ.get(n);
+        if (!nbrs) {
+            throw new Error(`The node ${n} is not in the graph.`);
+        }
+        for (const [v, edgeAttr] of nbrs.entries()) {
+            out.push([v, edgeAttr]);
+        }
+        return out;
+    }
+
     getAllNodes() {
         // Compute edges.
         const seenIds = new Set<number>();

@@ -2,6 +2,7 @@ import {DiGraph} from './digraph.ts';
 import {GeneralizeNode} from './generalizeNode.ts';
 import {copyOutputNode, findRuleForNode} from './graph-helper.ts';
 import {NodeBase} from './nodeBase.ts';
+import {ObjectNode} from './objectNode.ts';
 import {OutputNode} from './outputNode.ts';
 import {ValueNode} from './valueNode.ts';
 
@@ -51,15 +52,17 @@ export class ApplyRulesNode extends NodeBase {
                 const existingRule = findRuleForNode(this.graph, this.generalizeNode, valueNode);
                 console.log("Found existing rule: ", existingRule);
                 if (existingRule) {
-                    const existingRuleOutNode = this.graph.getNextNodeExactlyOne(existingRule, {type: 'out'});
+                    const existingRuleOutNode: ObjectNode = this.graph.getNextNodeExactlyOne(existingRule, {type: 'out'}) as ObjectNode;
                     copyOutputNode(this.graph, existingRuleOutNode, correspondingOutputNode);
-                    console.log("NYI: apply existing rule w/output:", existingRuleOutNode);
                 } else {
                     throw new Error(`NYI: no rule found`);
                 }
             } else {
                 console.log("Skipping empty value node: ", valueNode);
             }
+
+            // Make it a child of this node.
+            this.graph.addEdge(this, correspondingOutputNode, {type: 'child'});
         }
     }
 }
