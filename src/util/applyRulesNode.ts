@@ -2,16 +2,17 @@ import {DiGraph} from './digraph.ts';
 import {GeneralizeNode} from './generalizeNode.ts';
 import {findRuleForNode} from './graph-helper.ts';
 import {NodeBase} from './nodeBase.ts';
+import {OutputNode} from './outputNode.ts';
 import {ValueNode} from './valueNode.ts';
 
 export class ApplyRulesNode extends NodeBase {
     workQueue: ValueNode[] = [];
     workQueueSize = 0;
 
-    constructor(public graph: DiGraph, public generalizeNode: GeneralizeNode, public inputBeforeNodes2: ValueNode[], public outputAfterNodes2: ValueNode[]) {
+    constructor(public graph: DiGraph, public generalizeNode: GeneralizeNode, public inputNodes: ValueNode[], public outputNodes: OutputNode[]) {
         super();
 
-        this.workQueue = inputBeforeNodes2;
+        this.workQueue = inputNodes;
         this.workQueueSize = this.workQueue.length;
         if (this.workQueueSize === 0) {
             throw new Error(`Expected at least one node.`);

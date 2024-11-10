@@ -2,6 +2,7 @@ import {ApplyRulesNode} from './applyRulesNode.ts';
 import {DiGraph} from './digraph.ts';
 import {GeneralizeNode} from './generalizeNode.ts';
 import {MatcherNode} from './matcherNode.ts';
+import {OutputNode} from './outputNode.ts';
 import {ValueNode} from './valueNode.ts';
 
 export class Runner {
@@ -12,7 +13,7 @@ export class Runner {
     generalizeNode?: GeneralizeNode;
     applyRulesNode?: ApplyRulesNode;
     inputBeforeNodes2: ValueNode[] = [];
-    outputAfterNodes2: ValueNode[] = [];
+    outputAfterNodes2: OutputNode[] = [];
 
     // rootNode?: ContainerNode;
 
@@ -77,15 +78,15 @@ export class Runner {
         }
         // Install after.
         this.outputAfterNodes2 = [];
-        lastNode = undefined;
+        let lastOutputNode: OutputNode | undefined = undefined;
         for (const [index, char] of this.after.entries()) {
-            const n = new ValueNode(this.graph, char, `Out.${index}`, index);
+            const n = new OutputNode(this.graph, char, index);
             this.graph.addNode(n);
             this.outputAfterNodes2.push(n);
-            if (lastNode) {
-                this.graph.addEdge(lastNode, n, {type: 'seq'});
+            if (lastOutputNode) {
+                this.graph.addEdge(lastOutputNode, n, {type: 'seq'});
             }
-            lastNode = n;
+            lastOutputNode = n;
         }
 
         this.applyRulesNode = new ApplyRulesNode(this.graph, this.generalizeNode!, this.inputBeforeNodes2, this.outputAfterNodes2);
