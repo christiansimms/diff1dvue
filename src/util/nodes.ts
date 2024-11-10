@@ -1,30 +1,8 @@
 import {DiGraph} from './digraph.ts';
 import {addNodeAttribute, getNodeAttribute, getOnlyChild, getParents, safeParseInt} from './graph-helper.ts';
 import {Node} from './node-interface.ts';
+import {NodeBase} from './nodeBase.ts';
 import {ObjectNode} from './object-node.ts';
-
-let NodeId = 0;
-
-export class NodeBase implements Node {
-    score = 0;
-    id = NodeId++;
-    isDone = false;
-
-    constructor() {
-    }
-
-    evaluateScore() {
-        throw new Error(`Method not implemented on class: ${this.constructor.name}.`);
-    }
-
-    getLabel(): string {
-        throw new Error(`Method not implemented on class: ${this.constructor.name}.`);
-    }
-
-    doStep(): void {
-        this.evaluateScore();
-    }
-}
 
 export class ValueNode extends NodeBase {
     constructor(public graph: DiGraph, public value: string, public extraLabel: string, public pos: number) {
@@ -74,7 +52,7 @@ export class SearchNode extends NodeBase {
     }
 
     evaluateScore() {
-        const children: ValueNode[] = this.graph.successors(this) as ValueNode[];  // TODO graph
+        const children: ValueNode[] = this.graph.successors(this) as ValueNode[];
         if (children.length !== 1) {
             throw new Error(`Should only have one child, but has ${children.length}.`);
         }

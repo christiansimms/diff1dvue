@@ -1,7 +1,7 @@
 import {DiGraph} from './digraph.ts';
 import {addNodeAttribute} from './graph-helper.ts';
 import {Node} from './node-interface.ts';
-import {NodeBase} from './nodes.ts';
+import {NodeBase} from './nodeBase.ts';
 
 export class ObjectNode extends NodeBase {
     constructor(public graph: DiGraph, public value: string, public type: string, public delta: string, public inputValueNode?: Node) {
@@ -15,7 +15,6 @@ export class ObjectNode extends NodeBase {
     }
 
     evaluateScore() {
-        // TODO -- Don't need this right?
         this.score = 1;
         this.isDone = true;
     }

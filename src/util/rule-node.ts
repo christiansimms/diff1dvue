@@ -1,5 +1,5 @@
 import {DiGraph} from './digraph.ts';
-import {NodeBase} from './nodes.ts';
+import {NodeBase} from './nodeBase.ts';
 
 export class RuleNode extends NodeBase {
     constructor(public graph: DiGraph) {

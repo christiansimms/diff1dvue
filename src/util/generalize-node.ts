@@ -1,5 +1,5 @@
 import {DiGraph} from './digraph.ts';
-import {NodeBase} from './nodes.ts';
+import {NodeBase} from './nodeBase.ts';
 import {ObjectNode} from './object-node.ts';
 
 export class GeneralizeNode extends NodeBase {
@@ -35,6 +35,9 @@ export class GeneralizeNode extends NodeBase {
             this.graph.addEdge(this, objectNode, {type: 'child'});
 
             // Combine it.
+            if (!objectNode.inputValueNode) {
+                throw new Error(`NYI when objectNode has no inputValueNode.`);
+            }
             // const existingRule = findRuleForNode(this.graph, objectNode);
         }
     }
