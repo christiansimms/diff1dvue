@@ -8,7 +8,7 @@ import Matcher from './components/Matcher.vue';
   </div>
 <!--    <Matcher :before="['a', null]"  :after="[null, null]"/>-->
 <!--  <Matcher :before="[null, null]"  :after="['a', null]"/>-->
-  <Matcher :before="['a', '']"  :after="['', 'a']"/>
+  <Matcher :before="['a', '']"  :after="['', 'a']" :before2="['', 'a', '']"  />
 
 <!--  <Matcher :before="['a', null, null]"  :after="[null, 'a', null]"/>-->
 <!--  <Matcher :before="['a', null]"  :after="[null, 'a']"/>-->

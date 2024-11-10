@@ -11,7 +11,7 @@ export class Runner {
 
     // rootNode?: ContainerNode;
 
-    constructor(public before: string[], public after: string[]) {
+    constructor(public before: string[], public after: string[], public before2: string[]) {
     }
 
     installMatchers() {
@@ -57,6 +57,9 @@ export class Runner {
         this.graph.addNode(this.generalizeNode);
     }
 
+    installApplyRules() {
+    }
+
     // Return true if all done.
     doStep(): boolean {
         const nodes = this.graph.nodeArray();
@@ -69,13 +72,17 @@ export class Runner {
     }
 
     // If done then return number of steps, otherwise return undefined.
-    runUntilDone(stepLimit: number, shouldGeneralize = false): number | undefined {
+    runUntilDone(stepLimit: number, shouldGeneralize = false, shouldApplyRules = false): number | undefined {
         let alreadyGeneralized = false;
+        let alreadyAppliedRules = false;
         for (let i = 0; i < stepLimit; i++) {
             const isDone = this.doStep();
             if (isDone) {
                 if (shouldGeneralize && !alreadyGeneralized) {
                     this.installGeneralize();
+                    alreadyGeneralized = true;
+                } else if (shouldApplyRules && !alreadyAppliedRules) {
+                    this.installApplyRules();
                     alreadyGeneralized = true;
                 } else {
                     return i + 1;

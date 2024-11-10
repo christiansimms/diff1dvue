@@ -42,7 +42,7 @@ import {Runner} from '../util/runner';
 import {Network} from 'vis-network';
 
 
-const props = defineProps<{ before?: string[], after?: string[] }>()
+const props = defineProps<{ before?: string[], after?: string[], before2?: string[] }>()
 
 let runner: Runner;
 
@@ -50,7 +50,7 @@ const step: Ref<number> = ref(10);
 
 const message: Ref<string> = ref("");
 function run() {
-  runner = new Runner(props.before!, props.after!);
+  runner = new Runner(props.before!, props.after!, props.before2!);
   runner.installMatchers();
   const defaultSteps = 10;
   const stepsCompleted = runner.runUntilDone(defaultSteps, true);
@@ -64,7 +64,7 @@ function run() {
 }
 
 function restart() {
-  runner = new Runner(props.before!, props.after!);
+  runner = new Runner(props.before!, props.after!, props.before2!);
   runner.installMatchers();
   displayGraph();
   step.value = 0;
