@@ -75,10 +75,8 @@ export class GeneralizeNode extends NodeBase {
             }
             if (!existingRule) {
                 // Create new rule.
-                const rule = new RuleNode(this.graph);
+                const rule = new RuleNode(this.graph, objectNode.inputValueNode, objectNode);
                 this.graph.addEdge(this, rule, {type: 'rule'});
-                this.graph.addEdge(rule, objectNode.inputValueNode, {type: 'in'});
-                this.graph.addEdge(rule, objectNode, {type: 'out'});
             }
         }
     }
