@@ -9,7 +9,7 @@ function findRuleForNode(graph: DiGraph, startNode: Node, inputValueNode: ValueN
     const possibleRules = graph.getNextNodes(startNode, {type: 'rule'});
     for(const rule of possibleRules) {
         const ruleInNode = graph.getNextNode(rule, {type: 'in'});
-        if (ruleInNode && ruleInNode.value === inputValueNode.value) { // TODO .value
+        if (ruleInNode && (ruleInNode as ValueNode).value === inputValueNode.value) { // TODO .value
             return rule;
         }
     }
