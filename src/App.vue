@@ -12,6 +12,8 @@ import Matcher from './components/Matcher.vue';
 
 <!--  <Matcher :before="['a', null, null]"  :after="[null, 'a', null]"/>-->
 <!--  <Matcher :before="['a', null]"  :after="[null, 'a']"/>-->
+  <!-- Below is a conflict -->
+<!--    <Matcher :before="['a', 'a', null]"  :after="['a', null, 'a']"/>-->
 
 <!--  <Matcher :before="['a', 'b', 'c', 'd', 'e']"  :after="['a', 'b', 'c', 'd', 'e']"/>-->
 <!--  <Matcher :before="['a', 'b', 'c', 'd', 'e']"  :after="['b', 'a', 'c', 'e', 'd']"/>-->
