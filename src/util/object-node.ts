@@ -20,6 +20,6 @@ export class ObjectNode extends NodeBase {
     }
 
     getLabel(): string {
-        return `ObjectNode ${this.type} - score ${this.score} - id: ${this.id}`;
+        return `ObjectNode ${this.type}${this.delta} - score ${this.score} - id: ${this.id}`;
     }
 }

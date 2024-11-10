@@ -28,7 +28,7 @@
   <div v-if="ruleNodes.length > 0">
     Rule nodes:
     <div v-for="node in ruleNodes" :key="node.id">
-      <p>{{node.id}}: {{node.getLabel()}}</p>
+      <p>{{node.id}}: {{node.getLabel()}}, IN: {{node.inNode.getLabel()}}, OUT: {{node.outNode.getLabel()}}</p>
     </div>
   </div>
 
@@ -111,7 +111,7 @@ function setupNetwork() {
 }
 
 const nodesNotDone: Ref<Node[]> = ref([]);
-const ruleNodes: Ref<Node[]> = ref([]);
+const ruleNodes: Ref<RuleNode[]> = ref([]);
 function displayGraph() {
   const permData = runner.graph.getAllNodes();
   const data = {
