@@ -75,11 +75,31 @@ export function copyAttributes(graph: DiGraph, fromNode: ObjectNode, toNode: Out
     }
 }
 
+function findElementInSequence(graph: DiGraph, node: Node, delta: number): Node {
+    if (delta === 0) {
+        return node;
+    }
+    if (delta > 0) {
+        while (delta > 0) {
+            node = graph.getNextNodeExactlyOne(node, {type: 'seq'});
+            delta -= 1;
+        }
+    } else {
+        while (delta < 0) {
+            node = graph.getPreviousNodeExactlyOne(node, {type: 'seq'});
+            delta += 1;
+        }
+    }
+    return node;
+}
+
 export function copyOutputNode(graph: DiGraph, existingRuleOutNode: ObjectNode, correspondingOutputNode: OutputNode): void {
     if (existingRuleOutNode.type === 'stay') {
         copyAttributes(graph, existingRuleOutNode, correspondingOutputNode);
     } else if (existingRuleOutNode.type === 'move') {
-        copyAttributes(graph, existingRuleOutNode, correspondingOutputNode);
+        const delta = safeParseInt(existingRuleOutNode.delta);
+        const targetOutputNode = findElementInSequence(graph, correspondingOutputNode, delta);
+        copyAttributes(graph, existingRuleOutNode, targetOutputNode as OutputNode);
     } else {
         throw new Error(`NYI type ${existingRuleOutNode.type}`);
     }
