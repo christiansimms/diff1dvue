@@ -1,8 +1,8 @@
 import {DiGraph} from './digraph.ts';
 import {NodeBase} from './nodeBase.ts';
 import {Node} from './node-interface.ts';
-import {ObjectNode} from './object-node.ts';
-import {RuleNode} from './rule-node.ts';
+import {ObjectNode} from './objectNode.ts';
+import {RuleNode} from './ruleNode.ts';
 import {ValueNode} from './valueNode.ts';
 
 function findRuleForNode(graph: DiGraph, startNode: Node, inputValueNode: ValueNode): Node | undefined {

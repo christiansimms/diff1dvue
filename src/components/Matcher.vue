@@ -37,7 +37,7 @@
 <script setup lang="ts">
 import {onMounted, Ref, ref} from 'vue';
 import {Node} from '../util/node-interface.ts';
-import {RuleNode} from '../util/rule-node.ts';
+import {RuleNode} from '../util/ruleNode.ts';
 import {Runner} from '../util/runner';
 import {Network} from 'vis-network';
 

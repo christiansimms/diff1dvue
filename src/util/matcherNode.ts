@@ -2,8 +2,8 @@ import {ConstantNode} from './constantNode.ts';
 import {DiGraph} from './digraph.ts';
 import {getNodeAttribute, getOnlyChild, getParents, safeParseInt} from './graph-helper.ts';
 import {NodeBase} from './nodeBase.ts';
-import {SearchNode} from './nodes.ts';
-import {ObjectNode} from './object-node.ts';
+import {SearchNode} from './searchNode.ts';
+import {ObjectNode} from './objectNode.ts';
 import {ValueNode} from './valueNode.ts';
 
 export class MatcherNode extends NodeBase {
