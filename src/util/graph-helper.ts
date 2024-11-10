@@ -1,6 +1,7 @@
+import {ConstantNode} from './constantNode.ts';
 import {DiGraph} from './digraph.ts';
 import {Node} from './node-interface.ts';
-import {ConstantNode, MatcherNode} from './nodes.ts';
+import {MatcherNode} from './nodes.ts';
 
 
 export function getParents(node: MatcherNode) {

@@ -1,7 +1,8 @@
 import {DiGraph} from './digraph.ts';
 import {addNodeAttribute} from './graph-helper.ts';
 import {NodeBase} from './nodeBase.ts';
-import {ValueNode} from './nodes.ts';
+
+import {ValueNode} from './valueNode.ts';
 
 export class ObjectNode extends NodeBase {
     constructor(public graph: DiGraph, public value: string, public type: string, public delta: string, public inputValueNode?: ValueNode) {

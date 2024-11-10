@@ -1,9 +1,9 @@
 import {DiGraph} from './digraph.ts';
 import {NodeBase} from './nodeBase.ts';
 import {Node} from './node-interface.ts';
-import {ValueNode} from './nodes.ts';
 import {ObjectNode} from './object-node.ts';
 import {RuleNode} from './rule-node.ts';
+import {ValueNode} from './valueNode.ts';
 
 function findRuleForNode(graph: DiGraph, startNode: Node, inputValueNode: ValueNode): Node | undefined {
     const possibleRules = graph.getNextNodes(startNode, {type: 'rule'});

@@ -1,39 +1,9 @@
+import {ConstantNode} from './constantNode.ts';
 import {DiGraph} from './digraph.ts';
-import {addNodeAttribute, getNodeAttribute, getOnlyChild, getParents, safeParseInt} from './graph-helper.ts';
+import {getNodeAttribute, getOnlyChild, getParents, safeParseInt} from './graph-helper.ts';
 import {NodeBase} from './nodeBase.ts';
 import {ObjectNode} from './object-node.ts';
-
-export class ValueNode extends NodeBase {
-    constructor(public graph: DiGraph, public value: string, public extraLabel: string, public pos: number) {
-        super();
-        addNodeAttribute(this.graph, this, String(pos), 'pos');
-        addNodeAttribute(this.graph, this, value, 'value');
-        this.score = 1;
-        this.isDone = true;
-    }
-
-    evaluateScore() {
-    }
-
-    getLabel(): string {
-        return `ValueNode(${this.value})\n${this.extraLabel}`;
-    }
-}
-
-export class ConstantNode extends NodeBase {
-    constructor(public _graph: DiGraph, public value: string) {
-        super();
-        this.score = 1;
-        this.isDone = true;
-    }
-
-    evaluateScore() {
-    }
-
-    getLabel(): string {
-        return `ConstantNode(${this.value})`;
-    }
-}
+import {ValueNode} from './valueNode.ts';
 
 export class SearchNode extends NodeBase {
     energyUnits = 10;
