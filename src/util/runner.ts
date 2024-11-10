@@ -1,6 +1,6 @@
 import {DiGraph} from './digraph.ts';
 import {GeneralizeNode} from './generalize-node.ts';
-import {MatcherNode} from './nodes.ts';
+import {MatcherNode} from './matcherNode.ts';
 import {ValueNode} from './valueNode.ts';
 
 export class Runner {
