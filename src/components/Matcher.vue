@@ -32,11 +32,20 @@
     </div>
   </div>
 
+  <div v-if="outputNodes.length > 0">
+    Output nodes:
+    <div v-for="node in outputNodes" :key="node.id">
+      <p>{{node.id}}: {{node.getLabel()}}</p>
+    </div>
+  </div>
+
+
 </template>
 
 <script setup lang="ts">
 import {onMounted, Ref, ref} from 'vue';
 import {Node} from '../util/node-interface.ts';
+import {OutputNode} from '../util/outputNode.ts';
 import {RuleNode} from '../util/ruleNode.ts';
 import {Runner} from '../util/runner';
 import {Network} from 'vis-network';
@@ -112,6 +121,7 @@ function setupNetwork() {
 
 const nodesNotDone: Ref<Node[]> = ref([]);
 const ruleNodes: Ref<RuleNode[]> = ref([]);
+const outputNodes: Ref<OutputNode[]> = ref([]);
 function displayGraph() {
   const permData = runner.graph.getAllNodes();
   const data = {
@@ -121,6 +131,7 @@ function displayGraph() {
   network.setData(data);
   nodesNotDone.value = runner.graph.nodeArray().filter(n => !n.isDone);
   ruleNodes.value = runner.graph.nodeArray().filter(n => n instanceof RuleNode);
+  outputNodes.value = runner.graph.nodeArray().filter(n => n instanceof OutputNode);
 }
 
 onMounted(() => {
