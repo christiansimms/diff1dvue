@@ -1,6 +1,5 @@
 import {DiGraph} from './digraph.ts';
 import {addNodeAttribute, getNodeAttribute, getOnlyChild, getParents, safeParseInt} from './graph-helper.ts';
-import {Node} from './node-interface.ts';
 import {NodeBase} from './nodeBase.ts';
 import {ObjectNode} from './object-node.ts';
 
@@ -142,15 +141,15 @@ export class MatcherNode extends NodeBase {
             this.graph.log(this, `${this.getLabel()}: Looking at parents`);
 
             // Figure out targets.
-            let leftValueNode: Node | undefined = undefined, leftValue: ConstantNode | undefined, leftPos: ConstantNode;
-            let rightValueNode: Node, rightValue: ConstantNode | undefined, rightPos: ConstantNode;
+            let leftValueNode: ValueNode | undefined = undefined, leftValue: ConstantNode | undefined, leftPos: ConstantNode;
+            let rightValueNode: ValueNode, rightValue: ConstantNode | undefined, rightPos: ConstantNode;
             if (this.left.score === 1) {
-                leftValueNode = getOnlyChild(this.graph, this.left);
+                leftValueNode = getOnlyChild(this.graph, this.left) as ValueNode;
                 leftValue = getNodeAttribute(this.graph, leftValueNode, 'value');
                 leftPos = getNodeAttribute(this.graph, leftValueNode, 'pos');
             }
             if (this.right.score === 1) {
-                rightValueNode = getOnlyChild(this.graph, this.right);
+                rightValueNode = getOnlyChild(this.graph, this.right) as ValueNode;
                 rightValue = getNodeAttribute(this.graph, rightValueNode, 'value');
                 rightPos = getNodeAttribute(this.graph, rightValueNode, 'pos');
             }

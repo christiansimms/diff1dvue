@@ -1,10 +1,10 @@
 import {DiGraph} from './digraph.ts';
 import {addNodeAttribute} from './graph-helper.ts';
-import {Node} from './node-interface.ts';
 import {NodeBase} from './nodeBase.ts';
+import {ValueNode} from './nodes.ts';
 
 export class ObjectNode extends NodeBase {
-    constructor(public graph: DiGraph, public value: string, public type: string, public delta: string, public inputValueNode?: Node) {
+    constructor(public graph: DiGraph, public value: string, public type: string, public delta: string, public inputValueNode?: ValueNode) {
         super();
         addNodeAttribute(this.graph, this, value, 'value');
         addNodeAttribute(this.graph, this, type, 'type');

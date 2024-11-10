@@ -82,6 +82,14 @@ export class DiGraph {
         return undefined;
     }
 
+    getNextNodeExactlyOne(n: Node, edgeAttr?: EdgeAttr): Node {
+        const node = this.getNextNode(n, edgeAttr);
+        if (!node) {
+            throw new Error(`Expected one node, but found none.`);
+        }
+        return node;
+    }
+
     getPreviousNodes(n: Node, edgeAttrParam?: EdgeAttr): Node[] {
         const out: Node[] = [];
         const nbrs = this.pred.get(n);
