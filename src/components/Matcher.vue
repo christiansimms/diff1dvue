@@ -36,7 +36,7 @@
     Output nodes:
     <div class="grid-container">
       <p>Before: {{ before2 }}</p>
-<!--      <p>After: {{ after }}</p>-->
+      <p>After: {{ after2String }}</p>
     </div>
 
     <div v-for="node in outputNodes" :key="node.id">
@@ -127,6 +127,7 @@ function setupNetwork() {
 const nodesNotDone: Ref<Node[]> = ref([]);
 const ruleNodes: Ref<RuleNode[]> = ref([]);
 const outputNodes: Ref<OutputNode[]> = ref([]);
+const after2String: Ref<string> = ref();
 function displayGraph() {
   const permData = runner.graph.getAllNodes();
   const data = {
@@ -137,6 +138,7 @@ function displayGraph() {
   nodesNotDone.value = runner.graph.nodeArray().filter(n => !n.isDone);
   ruleNodes.value = runner.graph.nodeArray().filter(n => n instanceof RuleNode);
   outputNodes.value = runner.graph.nodeArray().filter(n => n instanceof OutputNode);
+  after2String.value = outputNodes.value.map(n => n.getOutputValue());
 }
 
 onMounted(() => {

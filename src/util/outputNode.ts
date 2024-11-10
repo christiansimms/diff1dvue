@@ -1,5 +1,5 @@
 import {DiGraph} from './digraph.ts';
-import {addNodeAttribute} from './graph-helper.ts';
+import {addNodeAttribute, getNodeAttribute} from './graph-helper.ts';
 import {NodeBase} from './nodeBase.ts';
 
 export class OutputNode extends NodeBase {
@@ -16,5 +16,10 @@ export class OutputNode extends NodeBase {
 
     getLabel(): string {
         return `OutputNode(${this.value})\npos=${this.pos}`;
+    }
+
+    getOutputValue() {
+        const currentValue = getNodeAttribute(this.graph, this, 'value');
+        return currentValue.value;
     }
 }
