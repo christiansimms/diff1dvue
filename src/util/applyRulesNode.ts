@@ -42,13 +42,17 @@ export class ApplyRulesNode extends NodeBase {
             // Make it a child of this node.
             this.graph.addEdge(this, valueNode, {type: 'child'});
 
-            const existingRule = findRuleForNode(this.graph, this.generalizeNode, valueNode);
-            console.log("Found existing rule: ", existingRule);
-            if (existingRule) {
-                const existingRuleOutNode = this.graph.getNextNodeExactlyOne(existingRule, {type: 'out'});
-                console.log("NYI: apply existing rule w/output:", existingRuleOutNode);
+            if (valueNode.value) {
+                const existingRule = findRuleForNode(this.graph, this.generalizeNode, valueNode);
+                console.log("Found existing rule: ", existingRule);
+                if (existingRule) {
+                    const existingRuleOutNode = this.graph.getNextNodeExactlyOne(existingRule, {type: 'out'});
+                    console.log("NYI: apply existing rule w/output:", existingRuleOutNode);
+                } else {
+                    throw new Error(`NYI: no rule found`);
+                }
             } else {
-                throw new Error(`NYI: no rule found`);
+                console.log("Skipping empty value node: ", valueNode);
             }
         }
     }
