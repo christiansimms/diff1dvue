@@ -8,11 +8,11 @@ export class ValueNode extends NodeBase {
         super();
         addNodeAttribute(this.graph, this, String(pos), 'pos');
         addNodeAttribute(this.graph, this, value, 'value');
+        this.score = 1;
+        this.isDone = true;
     }
 
     evaluateScore() {
-        this.score = 1;
-        this.isDone = true;
     }
 
     getLabel(): string {
@@ -23,11 +23,11 @@ export class ValueNode extends NodeBase {
 export class ConstantNode extends NodeBase {
     constructor(public _graph: DiGraph, public value: string) {
         super();
+        this.score = 1;
+        this.isDone = true;
     }
 
     evaluateScore() {
-        this.score = 1;
-        this.isDone = true;
     }
 
     getLabel(): string {

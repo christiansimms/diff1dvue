@@ -12,11 +12,11 @@ export class ObjectNode extends NodeBase {
         if (inputValueNode) {
             this.graph.addEdge(this, inputValueNode, {type: 'input-value'});
         }
+        this.score = 1;
+        this.isDone = true;
     }
 
     evaluateScore() {
-        this.score = 1;
-        this.isDone = true;
     }
 
     getLabel(): string {
