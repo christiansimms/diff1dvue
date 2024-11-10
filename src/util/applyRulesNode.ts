@@ -1,6 +1,6 @@
 import {DiGraph} from './digraph.ts';
 import {GeneralizeNode} from './generalizeNode.ts';
-import {findRuleForNode} from './graph-helper.ts';
+import {copyOutputNode, findRuleForNode} from './graph-helper.ts';
 import {NodeBase} from './nodeBase.ts';
 import {OutputNode} from './outputNode.ts';
 import {ValueNode} from './valueNode.ts';
@@ -35,9 +35,13 @@ export class ApplyRulesNode extends NodeBase {
         } else {
             // Find next object node.
             const valueNode = this.workQueue.pop();
-            console.log("GN looking at: ", valueNode);
+            console.log("ARN looking at: ", valueNode);
             if (!valueNode) {
                 throw new Error(`Expected object node but found none.`);
+            }
+            const correspondingOutputNode = this.outputNodes.find((outputNode) => outputNode.pos === valueNode.pos);
+            if (!correspondingOutputNode) {
+                throw new Error(`Expected corresponding output node but found none.`);
             }
 
             // Make it a child of this node.
@@ -48,6 +52,7 @@ export class ApplyRulesNode extends NodeBase {
                 console.log("Found existing rule: ", existingRule);
                 if (existingRule) {
                     const existingRuleOutNode = this.graph.getNextNodeExactlyOne(existingRule, {type: 'out'});
+                    copyOutputNode(this.graph, existingRuleOutNode, correspondingOutputNode);
                     console.log("NYI: apply existing rule w/output:", existingRuleOutNode);
                 } else {
                     throw new Error(`NYI: no rule found`);

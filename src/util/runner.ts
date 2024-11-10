@@ -79,7 +79,7 @@ export class Runner {
         // Install after.
         this.outputAfterNodes2 = [];
         let lastOutputNode: OutputNode | undefined = undefined;
-        for (const [index, char] of this.after.entries()) {
+        for (const [index, char] of this.before2.entries()) {  // Make sure this is same length as before2
             const n = new OutputNode(this.graph, char, index);
             this.graph.addNode(n);
             this.outputAfterNodes2.push(n);

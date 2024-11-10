@@ -3,6 +3,7 @@ import {DiGraph} from './digraph.ts';
 import {MatcherNode} from './matcherNode.ts';
 import {Node} from './node-interface.ts';
 import {ObjectNode} from './objectNode.ts';
+import {OutputNode} from './outputNode.ts';
 import {ValueNode} from './valueNode.ts';
 
 
@@ -58,4 +59,10 @@ export function findRuleForNode(graph: DiGraph, ruleContainerNode: Node, inputVa
 
 export function areRuleOutputsSame(existingRuleOutNode: ObjectNode, objectNode: ObjectNode): boolean {
     return existingRuleOutNode.type === objectNode.type && existingRuleOutNode.delta === objectNode.delta;
+}
+
+export function copyOutputNode(graph: DiGraph, existingRuleOutNode: Node, correspondingOutputNode: OutputNode): void {
+    if (!(existingRuleOutNode instanceof ObjectNode)) {
+        throw new Error(`Expected existingRuleOutNode to be an ObjectNode.`);
+    }
 }
