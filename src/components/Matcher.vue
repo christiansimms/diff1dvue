@@ -52,7 +52,7 @@ const message: Ref<string> = ref("");
 function run() {
   runner = new Runner(props.before!, props.after!, props.before2!);
   runner.installMatchers();
-  const defaultSteps = 10;
+  const defaultSteps = 20;
   const stepsCompleted = runner.runUntilDone(defaultSteps, true, true);
   if (stepsCompleted) {
     message.value = `Completed in ${stepsCompleted} steps.`;
