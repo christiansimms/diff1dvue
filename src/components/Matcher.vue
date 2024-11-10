@@ -18,12 +18,18 @@
     <!-- Our sketch will go here! -->
   </div>
 
-  <div>
+  <div v-if="nodesNotDone.length > 0">
     List of nodes not done:
     <div v-for="node in nodesNotDone" :key="node.id">
       <p>{{node.id}}: {{node.getLabel()}}</p>
     </div>
+  </div>
 
+  <div v-if="ruleNodes.length > 0">
+    Rule nodes:
+    <div v-for="node in ruleNodes" :key="node.id">
+      <p>{{node.id}}: {{node.getLabel()}}</p>
+    </div>
   </div>
 
 </template>
@@ -31,6 +37,7 @@
 <script setup lang="ts">
 import {onMounted, Ref, ref} from 'vue';
 import {Node} from '../util/node-interface.ts';
+import {RuleNode} from '../util/rule-node.ts';
 import {Runner} from '../util/runner';
 import {Network} from 'vis-network';
 
@@ -104,6 +111,7 @@ function setupNetwork() {
 }
 
 const nodesNotDone: Ref<Node[]> = ref([]);
+const ruleNodes: Ref<Node[]> = ref([]);
 function displayGraph() {
   const permData = runner.graph.getAllNodes();
   const data = {
@@ -112,6 +120,7 @@ function displayGraph() {
   };
   network.setData(data);
   nodesNotDone.value = runner.graph.nodeArray().filter(n => !n.isDone);
+  ruleNodes.value = runner.graph.nodeArray().filter(n => n instanceof RuleNode);
 }
 
 onMounted(() => {
