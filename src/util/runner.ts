@@ -1,5 +1,5 @@
 import {DiGraph} from './digraph.ts';
-import {GeneralizeNode} from './generalize-node.ts';
+import {GeneralizeNode} from './generalizeNode.ts';
 import {MatcherNode} from './matcherNode.ts';
 import {ValueNode} from './valueNode.ts';
 
