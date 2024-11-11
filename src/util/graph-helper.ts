@@ -75,10 +75,10 @@ export function copyAttributes(graph: DiGraph, fromNode: ObjectNode, toNode: Out
         }
 
         if (attributes.indexOf(edgeAttr.type) >= 0) {
-            console.log("Copying attribute: ", toNode, edgeAttr.type);
+            // console.log("Copying attribute: ", toNode, edgeAttr.type);
             graph.addEdge(toNode, targetNode, {type: edgeAttr.type});
         } else {
-            console.log("copyAttributes skipping attribute: ", edgeAttr.type);
+            // console.log("copyAttributes skipping attribute: ", edgeAttr.type);
         }
     }
 }
@@ -94,10 +94,10 @@ function removeAllAttributes(graph: DiGraph, node: OutputNode, attributes: strin
         }
 
         if (attributes.indexOf(edgeAttr.type) >= 0) {
-            console.log("Removing attribute: ", node, edgeAttr.type);
+            // console.log("Removing attribute: ", node, edgeAttr.type);
             graph.removeEdge(node, targetNode);
         } else {
-            console.log("removeAllAttributes skipping attribute: ", edgeAttr.type);
+            // console.log("removeAllAttributes skipping attribute: ", edgeAttr.type);
         }
     }
 

@@ -12,7 +12,7 @@ export class GeneralizeNode extends NodeBase {
 
         this.workQueue = this.graph.nodeArray().filter(n => n instanceof ObjectNode);
         this.workQueueSize = this.workQueue.length;
-        console.log("FOUND objects", this.workQueue);
+        // console.log("FOUND objects", this.workQueue);
         if (this.workQueueSize === 0) {
             throw new Error(`Expected at least one object node.`);
         }
@@ -34,7 +34,7 @@ export class GeneralizeNode extends NodeBase {
         } else {
             // Find next object node.
             const objectNode = this.workQueue.pop();
-            console.log("GN looking at: ", objectNode);
+            this.graph.log(this, `GN looking at: ${objectNode}`);
             if (!objectNode) {
                 throw new Error(`Expected object node but found none.`);
             }
@@ -47,7 +47,7 @@ export class GeneralizeNode extends NodeBase {
                 throw new Error(`NYI when objectNode has no inputValueNode.`);
             }
             const existingRule = findRuleForNode(this.graph, this, objectNode.inputValueNode);
-            console.log("Found existing rule: ", existingRule);
+            this.graph.log(this, `Found existing rule: ${existingRule}`);
             if (existingRule) {
                 // Detect conflict.
                 const existingRuleOutNode = this.graph.getNextNodeExactlyOne(existingRule, {type: 'out'});

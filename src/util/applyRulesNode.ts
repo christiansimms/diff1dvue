@@ -36,7 +36,7 @@ export class ApplyRulesNode extends NodeBase {
         } else {
             // Find next object node.
             const valueNode = this.workQueue.pop();
-            console.log("ARN looking at: ", valueNode);
+            this.graph.log(this, `ARN looking at: ${valueNode}`);
             if (!valueNode) {
                 throw new Error(`Expected object node but found none.`);
             }
@@ -50,7 +50,7 @@ export class ApplyRulesNode extends NodeBase {
 
             if (valueNode.value) {
                 const existingRule = findRuleForNode(this.graph, this.generalizeNode, valueNode);
-                console.log("Found existing rule: ", existingRule);
+                this.graph.log(this, `Found existing rule: ${existingRule}`);
                 if (existingRule) {
                     const existingRuleOutNode: ObjectNode = this.graph.getNextNodeExactlyOne(existingRule, {type: 'out'}) as ObjectNode;
                     copyOutputNode(this.graph, existingRuleOutNode, correspondingOutputNode);
@@ -58,7 +58,7 @@ export class ApplyRulesNode extends NodeBase {
                     throw new Error(`NYI: no rule found`);
                 }
             } else {
-                console.log("Skipping empty value node: ", valueNode);
+                this.graph.log(this, `Skipping empty value node: ${valueNode}`);
             }
 
             // Make it a child of this node.

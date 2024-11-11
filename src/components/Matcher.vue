@@ -125,7 +125,7 @@ function setupNetwork() {
 const nodesNotDone: Ref<Node[]> = ref([]);
 const ruleNodes: Ref<RuleNode[]> = ref([]);
 const outputNodes: Ref<OutputNode[]> = ref([]);
-const after2String: Ref<string> = ref();
+const after2String: Ref<string[]> = ref([]);
 function displayGraph() {
   const permData = runner.graph.getAllNodes();
   const data = {
