@@ -18,9 +18,10 @@ export class Runner {
     // rootNode?: ContainerNode;
 
     constructor(public before: string[], public after: string[], public before2: string[]) {
+        this.installMatchers();
     }
 
-    installMatchers() {
+    private installMatchers() {
         // Install before.
         this.inputBeforeNodes = [];
         let lastNode: ValueNode | undefined = undefined;

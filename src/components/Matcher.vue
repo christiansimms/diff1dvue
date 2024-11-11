@@ -65,7 +65,6 @@ const step: Ref<number> = ref(10);
 const message: Ref<string> = ref("");
 function run() {
   runner = new Runner(props.before!, props.after!, props.before2!);
-  runner.installMatchers();
   const defaultSteps = 20;
   const stepsCompleted = runner.runUntilDone(defaultSteps, true, true);
   if (stepsCompleted) {
@@ -79,7 +78,6 @@ function run() {
 
 function restart() {
   runner = new Runner(props.before!, props.after!, props.before2!);
-  runner.installMatchers();
   displayGraph();
   step.value = 0;
   message.value = "";

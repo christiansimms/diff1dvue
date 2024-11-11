@@ -5,8 +5,7 @@ function prettyBlock(s: string[]): string {
 }
 
 function simple(before: string[], after: string[]) {
-    const runner = new Runner(before, after);
-    runner.installMatchers();
+    const runner = new Runner(before, after, []);
     const stepsCompleted = runner.runUntilDone(10);
     if (stepsCompleted) {
         console.log(`Success: ${prettyBlock(before)} -> ${prettyBlock(after)}`);
@@ -15,8 +14,8 @@ function simple(before: string[], after: string[]) {
     }
 }
 
-console.log("Starting tests");
+console.log("Starting simple tests");
 simple(['a', ''], ['', 'a']);
 simple(['a', '', ''], ['', '', 'a']);
 simple(['a', '', '', '', ''], ['', '', '', '', 'a']);
-console.log("Done tests");
+console.log("Done simple tests");
