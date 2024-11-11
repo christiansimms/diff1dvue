@@ -26,7 +26,7 @@ function full(before: string[], after: string[], before2: string[], after2Expect
         if (after2Str === after2ExpectedStr) {
             console.log(`Success: ${prettyBlock(before2)} -> ${prettyBlock(after2Array)}`);
         } else {
-            throw new Error(`Test failed: ${prettyBlock(before2)} -> ${prettyBlock(after2Array)}: ${after2Str} != ${after2ExpectedStr}`);
+            throw new Error(`Test failed: ${prettyBlock(before2)} -> ${prettyBlock(after2Array)}: but expected: ${prettyBlock(after2Expected)}`);
         }
     } else {
         throw new Error(`Test failed: ${prettyBlock(before)} -> ${prettyBlock(after)}`);
@@ -41,4 +41,5 @@ console.log("Done\n");
 
 console.log("Starting full tests");
 full(['a', ''], ['', 'a'], ['', 'a', ''], ['', '', 'a']);
+full(['a', ''], ['', 'a'], ['a', 'a', ''], ['', 'a', 'a']);
 console.log("Done full tests");
