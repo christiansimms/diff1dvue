@@ -61,19 +61,48 @@ export function areRuleOutputsSame(existingRuleOutNode: ObjectNode, objectNode: 
     return existingRuleOutNode.type === objectNode.type && existingRuleOutNode.delta === objectNode.delta;
 }
 
-export function copyAttributes(graph: DiGraph, fromNode: ObjectNode, toNode: OutputNode): void {
+export function copyAttributes(graph: DiGraph, fromNode: ObjectNode, toNode: OutputNode, attributes: string[]): void {
+
+    removeAllAttributes(graph, toNode, attributes);
+
     const allEdges = graph.getNextEdges(fromNode);
     for (const [targetNode, edgeAttr] of allEdges) {
-        if (edgeAttr.type === 'child') {
+        if (edgeAttr.type === 'child' || edgeAttr.type === 'seq') {
             continue;
         }
         if (!(targetNode instanceof ConstantNode) && !(targetNode instanceof ValueNode)) {
             throw new Error(`Expected a ConstantNode but found ${targetNode}.`);
         }
-        // addNodeAttribute(graph, toNode, targetNode, edgeAttr.type);
-        graph.addEdge(toNode, targetNode, {type: edgeAttr.type});
+
+        if (attributes.indexOf(edgeAttr.type) >= 0) {
+            console.log("Copying attribute: ", toNode, edgeAttr.type);
+            graph.addEdge(toNode, targetNode, {type: edgeAttr.type});
+        } else {
+            console.log("copyAttributes skipping attribute: ", edgeAttr.type);
+        }
     }
 }
+
+function removeAllAttributes(graph: DiGraph, node: OutputNode, attributes: string[]) {
+    const allEdges = graph.getNextEdges(node);
+    for (const [targetNode, edgeAttr] of allEdges) {
+        if (edgeAttr.type === 'child' || edgeAttr.type === 'seq') {
+            continue;
+        }
+        if (!(targetNode instanceof ConstantNode) && !(targetNode instanceof ValueNode)) {
+            throw new Error(`Expected a ConstantNode but found ${targetNode}.`);
+        }
+
+        if (attributes.indexOf(edgeAttr.type) >= 0) {
+            console.log("Removing attribute: ", node, edgeAttr.type);
+            graph.removeEdge(node, targetNode);
+        } else {
+            console.log("removeAllAttributes skipping attribute: ", edgeAttr.type);
+        }
+    }
+
+}
+
 
 function findElementInSequence(graph: DiGraph, node: Node, delta: number): Node {
     if (delta === 0) {
@@ -94,12 +123,15 @@ function findElementInSequence(graph: DiGraph, node: Node, delta: number): Node 
 }
 
 export function copyOutputNode(graph: DiGraph, existingRuleOutNode: ObjectNode, correspondingOutputNode: OutputNode): void {
+    const attributesToCopy = ['value'];
     if (existingRuleOutNode.type === 'stay') {
-        copyAttributes(graph, existingRuleOutNode, correspondingOutputNode);
+        // removeAllAttributes(graph, correspondingOutputNode);
+        copyAttributes(graph, existingRuleOutNode, correspondingOutputNode, attributesToCopy);
     } else if (existingRuleOutNode.type === 'move') {
         const delta = safeParseInt(existingRuleOutNode.delta);
         const targetOutputNode = findElementInSequence(graph, correspondingOutputNode, delta);
-        copyAttributes(graph, existingRuleOutNode, targetOutputNode as OutputNode);
+        // removeAllAttributes(graph, correspondingOutputNode);
+        copyAttributes(graph, existingRuleOutNode, targetOutputNode as OutputNode, attributesToCopy);
     } else {
         throw new Error(`NYI type ${existingRuleOutNode.type}`);
     }
