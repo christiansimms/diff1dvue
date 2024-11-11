@@ -42,4 +42,5 @@ console.log("Done\n");
 console.log("Starting full tests");
 full(['a', ''], ['', 'a'], ['', 'a', ''], ['', '', 'a']);
 full(['a', ''], ['', 'a'], ['a', 'a', ''], ['', 'a', 'a']);
+// full(['a', ''], ['', 'a'], ['b', ''], ['b', '']);
 console.log("Done full tests");
