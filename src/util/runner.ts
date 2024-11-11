@@ -80,7 +80,7 @@ export class Runner {
         this.outputAfterNodes2 = [];
         let lastOutputNode: OutputNode | undefined = undefined;
         for (const [index, _char] of this.before2.entries()) {  // Make sure this is same length as before2
-            const n = new OutputNode(this.graph, "needs-to-be-filled-in", index);
+            const n = new OutputNode(this.graph, '', index);
             this.graph.addNode(n);
             this.outputAfterNodes2.push(n);
             if (lastOutputNode) {
