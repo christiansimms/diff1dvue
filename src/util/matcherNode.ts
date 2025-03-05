@@ -78,6 +78,10 @@ export class MatcherNode extends NodeBase {
                     this.graph.log(this, `Parent type doesn't match, replacing ${parentType} with ${type}`);
                 } else {
                     this.graph.log(this, "Parent type matches, nothing to do");
+                    if (this.left.isDone && this.right.isDone) {
+                        this.graph.log(this, `MatcherNode is done`);
+                        this.isDone = true;
+                    }
                     return;
                 }
 
@@ -91,6 +95,8 @@ export class MatcherNode extends NodeBase {
             if (this.left.isDone && this.right.isDone) {
                 this.graph.log(this, `MatcherNode is done`);
                 this.isDone = true;
+            } else {
+                this.graph.log(this, `MatcherNode is not done, left: ${this.left.id} ${this.left.isDone}, right: ${this.right.id} ${this.right.isDone}`);
             }
         }
     }

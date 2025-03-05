@@ -34,10 +34,10 @@ export class GeneralizeNode extends NodeBase {
         } else {
             // Find next object node.
             const objectNode = this.workQueue.pop();
-            this.graph.log(this, `GN looking at: ${objectNode}`);
             if (!objectNode) {
                 throw new Error(`Expected object node but found none.`);
             }
+            this.graph.log(this, `GN looking at: ${objectNode.id}`);
 
             // Make it a child of this node.
             this.graph.addEdge(this, objectNode, {type: 'child'});
