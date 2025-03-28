@@ -8,13 +8,16 @@
     "build": "vue-tsc -b && vite build",
     "preview": "vite preview",
     "test-not-work": "ts-node --project tsconfig.command-line.json src/util/test.ts",
-    "test": "tsx src/util/test.ts"
+    "test": "tsx src/util/test.ts",
+    "perm": "tsx src/permutation/test.ts"
   },
   "dependencies": {
+    "icepick": "^2.4.0",
     "vis-network": "^9.1.9",
     "vue": "^3.5.10"
   },
   "devDependencies": {
+    "@types/icepick": "^2.3.3",
     "@vitejs/plugin-vue": "^5.1.4",
     "ts-node": "^10.9.2",
     "tsx": "^4.19.2",
